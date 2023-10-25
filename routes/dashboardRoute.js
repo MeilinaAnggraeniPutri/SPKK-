@@ -3,7 +3,7 @@ const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const dashboardController = require('../controllers/dashboardController');
 
-router.route('/')
+router.route('/dashboard')
     .get(catchAsync(dashboardController.index))
 
 module.exports = router;

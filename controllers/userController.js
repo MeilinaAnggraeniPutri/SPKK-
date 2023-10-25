@@ -14,7 +14,7 @@ class UserController {
             req.login(registeredUser, err => {
                 if (err) return next(err);
                 req.flash('success', 'Welcome to Yelp Camp!');
-                res.redirect('/campgrounds');
+                res.redirect('/login');
             });
         } catch (e) {
             req.flash('error', e.message);
@@ -28,7 +28,7 @@ class UserController {
 
     static login(req, res) {
         req.flash('success', 'welcome back!');
-        const redirectUrl = req.session.returnTo || '/';
+        const redirectUrl = req.session.returnTo || '/dashboard';
         delete req.session.returnTo;
         res.redirect(redirectUrl);
     }
@@ -36,7 +36,7 @@ class UserController {
     static logout(req, res) {
         req.logout();
         req.flash('success', "Goodbye!");
-        res.redirect('/campgrounds');
+        res.redirect('/login');
     }
 }
 
