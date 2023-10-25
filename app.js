@@ -76,6 +76,13 @@ const dashboardRoute = require('./routes/dashboardRoute')
 const userRoute = require('./routes/user')
 // const penilaianRoute = require('./routes/penilaianRoute')
 // const userRoute = require('./routes/userRoute')
+app.use((req, res, next) => {
+    if (req.originalUrl === '/') {
+        return res.redirect('/login');
+    }
+    next();
+});
+
 
 app.use('/', dashboardRoute, userRoute)
 app.use('/jabatan', jabatanRoute)
