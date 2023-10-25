@@ -93,6 +93,7 @@ static async renderCreateForm(req, res, next) {
         }
         penilaian.total_nilai = total_nilai;
         await penilaian.save();
+        res.redirect('/penilaian');
     }
 
     static async renderEditForm(req, res, next) {
