@@ -1,0 +1,106 @@
+<% layout('layouts/boilerplate') %>
+<div class="container-xxl position-relative bg-white d-flex p-0">
+  <%- include('../partials/spinner') %> <%- include('../partials/sidebar') %>
+  <!-- Content Start -->
+  <div class="content">
+    <%- include('../partials/navbar') %>
+
+        <!-- Chart Start -->
+        <div class="container-xl">
+          <div class="table-responsive">
+            <div class="table-wrapper">
+              <div class="table-title">
+                <div class="row">
+                  <div class="col-sm-5">
+                    <h2>Penilaian</h2>
+                  </div>
+
+                  <div class="col-sm-7">
+                    <a href="#" class="btn btn-primary"
+                      ><i class="material-icons">&#xE24D;</i>
+                      <span>Export to Excel</span></a
+                    >
+                    <a href="#" class="btn btn-primary"
+                      ><i class="material-icons">&#xE24D;</i>
+                      <span>Export to Pdf</span></a
+                    >
+                    <a href="/penilaian/new" class="btn btn-primary"
+                      ><i class="material-icons">&#xE147;</i>
+                      <span>Add New Penilaian</span></a
+                    >
+                  </div>
+                </div>
+              </div>
+              <table class="table table-striped table-hover">
+                <div class="search-box">
+                  <input type="text" id="search" placeholder="Search..." />
+                  <button onclick="searchTable()">Search</button>
+                </div>
+                <thead>
+                  <tr>
+                      <th>#</th>
+                      <th>Nama</th>
+                      <th>Tanggal</th>
+                      <th>Penilaian Bulan</th>
+                      <th>Izin</th>
+                      <th>Tanpa Izin</th>
+                      <th>Total Nilai</th>
+                      <th>Action</th>
+                  </tr>
+              </thead>
+                  <% penilaian.forEach((item, index) => { %>
+                    <tr>
+                      <td><%= index + 1 %></td>
+                      <td><a href="#"><%= item.pegawaiID.namaPegawai %></a></td>
+                      <td><%= item.tanggal %></td>
+                      <td><%= item.bulanPenilaian %></td>
+                      <td><%= item.izin %></td>
+                      <td><%= item.tanpaIzin %></td>
+                      <td><%= item.total_nilai %></td>
+                      <td>
+                        <!-- <a href="#" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons">&#xE8B8;</i></a> -->
+                        <form action="/penilaian/delete/<%= item._id %>?_method=DELETE" method="POST" style="display: inline-block">
+                          <button type="submit" class="btn btn-danger delete" title="Delete" data-toggle="tooltip">
+                            <i class="material-icons">&#xE5C9;</i>
+                          </button>
+                        </form>
+                        
+                        
+                      </td>
+                    </tr>
+                  <% }) %>
+                 
+                </tbody>
+              </table>
+              <div class="clearfix">
+                <div class="hint-text">
+                  <!-- Display pagination information -->
+                  Showing <b><%= penilaian.length %></b> out of <b><%= totalEntries %></b> entries
+                </div>
+                <ul class="pagination">
+                  <li class="page-item <%= currentPage <= 1 ? 'disabled' : '' %>">
+                    <a href="<%= currentPage > 1 ? '/penilaian?page=' + (currentPage - 1) : '' %>">Previous</a>
+                  </li>
+                  <% for (let i = 1; i <= totalPages; i++) { %>
+                    <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                      <a href="/penilaian?page=<%= i %>" class="page-link"><%= i %></a>
+                    </li>
+                  <% } %>
+                  <li class="page-item <%= currentPage >= totalPages ? 'disabled' : '' %>">
+                    <a href="/penilaian?page=<%= currentPage + 1 %>">Next</a>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Chart End -->
+
+    <!-- Widgets End -->
+    <%- include('../partials/footer') %>
+
+    <!-- Content End -->
+  </div>
+</div>

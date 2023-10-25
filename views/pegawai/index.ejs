@@ -1,0 +1,121 @@
+<% layout('layouts/boilerplate') %>
+<div class="container-xxl position-relative bg-white d-flex p-0">
+  <%- include('../partials/spinner') %> <%- include('../partials/sidebar') %>
+  <!-- Content Start -->
+  <div class="content">
+    <%- include('../partials/navbar') %>
+
+    <!-- Button Start -->
+    <div class="container-xl">
+      <div class="table-responsive">
+        <div class="table-wrapper">
+          <div class="table-title">
+            <div class="row">
+              <div class="col-sm-5">
+                <h2>Pegawai</h2>
+              </div>
+
+              <div class="col-sm-7">
+                <a href="#" class="btn btn-primary"
+                  ><i class="material-icons">&#xE24D;</i>
+                  <span>Export to Excel</span></a
+                >
+                <a href="#" class="btn btn-primary"
+                  ><i class="material-icons">&#xE24D;</i>
+                  <span>Export to Pdf</span></a
+                >
+                <a
+                  href="#"
+                  class="btn btn-primary"
+                  data-toggle="modal"
+                  data-target="#addPegawaiModal"
+                >
+                  <i class="material-icons">&#xE147;</i>
+                  <span>Add New Pegawau</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <table class="table table-striped table-hover">
+            <div class="search-box">
+              <input type="text" id="search" placeholder="Search..." />
+              <button onclick="searchTable()">Search</button>
+            </div>
+            <thead>
+              <tr>
+                <th>Nama</th>
+                <th>NIP</th>
+                <th>Jabatan</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <% pegawai.forEach((pegawai) => { %>
+                <td><a href="#"> <%= pegawai.namaPegawai %></a></td>
+                <td><%= pegawai.NIP %></td>
+                <td><%= pegawai.jabatanID.namaJabatan %></td>
+
+                <!-- <td><span class="status text-success">&bull;</span> Active</td> -->
+                <td>
+                  <form
+                    action="/pegawai/delete/<%= pegawai._id %>?_method=DELETE"
+                    method="POST"
+                    style="display: inline-block"
+                  >
+                    <button
+                      class="btn"
+                      style="
+                        background-color: transparent;
+                        border: none;
+                        color: #f52525;
+                      "
+                      title="Delete"
+                      data-toggle="tooltip"
+                      type="submit"
+                    >
+                      <i class="material-icons">&#xE5C9;</i>
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+          <div class="clearfix">
+            <div class="hint-text">
+              Showing <b><%= pegawai.length %></b> out of
+              <b><%= 25 %></b> entries
+            </div>
+            <ul class="pagination">
+              <li class="page-item <%= currentPage <= 1 ? 'disabled' : '' %>">
+                <a
+                  href="<%= currentPage > 1 ? '/pegawai?page=' + (currentPage - 1) : '' %>"
+                  >Previous</a
+                >
+              </li>
+
+              <% for(let i = 1; i <= totalPages; i++) { %>
+              <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                <a href="/pegawai?page=<%= i %>" class="page-link"><%= i %></a>
+              </li>
+              <% } %>
+
+              <li
+                class="page-item <%= currentPage >= totalPages ? 'disabled' : '' %>"
+              >
+                <a href="/pegawai?page=<%= currentPage + 1 %>">Next</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Typography End -->
+    <%- include('./addPegawai') %>
+    <!-- Widgets End -->
+    <%- include('../partials/footer') %>
+
+    <!-- Content End -->
+  </div>
+</div>
