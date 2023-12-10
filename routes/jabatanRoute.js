@@ -11,6 +11,9 @@ router.route('/new')
     // .get(catchAsync(jabatanController.renderNewForm))
     .post(catchAsync(jabatanController.createJabatan))
 
+router.route('/edit/:id')
+    .put(catchAsync(jabatanController.editJabatan))
+
 router.route('/delete/:id')
     .delete(catchAsync(jabatanController.deleteJabatan))
 

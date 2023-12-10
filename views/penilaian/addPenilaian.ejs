@@ -1,274 +1,287 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Form Penilaian</title>
-    <!-- Include Bootstrap CSS -->
-    <link
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div class="container mt-5">
-      <h1 class="mb-4">Form Penilaian</h1>
-      <form action="/penilaian/new" method="POST">
-        <!-- Input Pegawai ID (Assuming you have a list of employees to choose from) -->
-        <div class="form-group">
-          <label for="pegawaiID">Pegawai:</label>
-          <select class="form-control" name="pegawaiID" id="pegawaiID" required>
-            <% for (const employee of pegawai) { %>
-            <option value="<%= employee._id %>">
-              <%= employee.namaPegawai %>
-            </option>
-            <% } %>
-          </select>
-        </div>
-        <!-- Menampilkan Jabatan Otomatis -->
-        <div class="form-group">
-          <label for="jabatan">Jabatan:</label>
-          <input
-            type="text"
-            class="form-control"
-            name="jabatan"
-            id="jabatan"
-            value="<%= pegawai[0].jabatanID.namaJabatan %>"
-            readonly
-          />
-        </div>
-        <!-- Input Tanggal -->
-        <div class="form-group">
-          <label for="tanggal">Tanggal:</label>
-          <input
-            type="date"
-            class="form-control"
-            name="tanggal"
-            id="tanggal"
-            required
-          />
-        </div>
-
-        <!-- Input Bulan Penilaian -->
-        <div class="form-group">
-          <label for="bulanPenilaian">Bulan Penilaian:</label>
-          <select
-            class="form-control"
-            name="bulanPenilaian"
-            id="bulanPenilaian"
-            required
-          >
-            <option value="Januari">Januari</option>
-            <option value="Februari">Februari</option>
-            <option value="Maret">Maret</option>
-            <option value="April">April</option>
-            <option value="Mei">Mei</option>
-            <option value="Juni">Juni</option>
-            <option value="Juli">Juli</option>
-            <option value="Agustus">Agustus</option>
-            <option value="September">September</option>
-            <option value="Oktober">Oktober</option>
-            <option value="November">November</option>
-            <option value="Desember">Desember</option>
-          </select>
-        </div>
-
-        <!-- Input Izin -->
-        <div class="form-group">
-          <label for="izin">Izin:</label>
-          <input
-            type="number"
-            class="form-control"
-            name="izin"
-            id="izin"
-            required
-          />
-        </div>
-
-        <!-- Input Tanpa Izin -->
-        <div class="form-group">
-          <label for="tanpaIzin">Tanpa Izin:</label>
-          <input
-            type="number"
-            class="form-control"
-            name="tanpaIzin"
-            id="tanpaIzin"
-            required
-          />
-        </div>
-
-        <!-- Detail Penilaian -->
-        <h2 class="mt-4">Detail Penilaian</h2>
-        <button
-          type="button"
-          class="btn btn-primary mb-2"
-          data-toggle="modal"
-          data-target="#addCategoryModal"
-        >
-          Add Category
-        </button>
-
-        <div id="detail_penilaian">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>NO</th>
-                <th>Keterangan</th>
-                <th>Nilai</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% for (let i = 0; i < kategori.length; i++) { %>
-              <tr>
-                <td><%= i + 1 %></td>
-                <td><%= kategori[i].name %></td>
-                <td>
-                  <% const values = ['SB', 'B', 'C', 'K', 'SK']; %> <% for (let
-                  j = 0; j < values.length; j++) { %>
-                  <div class="form-check form-check-inline">
-                    <input
-                      type="radio"
-                      class="form-check-input"
-                      name="kategori<%= i %>"
-                      value="<%= values[j] %>"
-                      id="kategori<%= i %>_<%= values[j] %>"
-                    />
-                    <label
-                      class="form-check-label"
-                      for="kategori<%= i %>_<%= values[j] %>"
-                    >
-                      <%= values[j] %>
-                    </label>
+<% layout('layouts/boilerplate') %>
+<div class="container-scroller">
+  <%- include('../partials/_navbar') %>
+  <div class="container-fluid page-body-wrapper">
+    <%- include('../partials/_settings-panel') %> <%-
+    include('../partials/_sidebar') %>
+    <div class="main-panel">
+      <div class="content-wrapper">
+        <div class="row">
+          <div class="col-12 grid-margin">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Add Penilaian</h4>
+                <form class="form-sample" action="/penilaian/new" method="POST">
+                  <p class="card-description">Form</p>
+                  <div class="row">
+                    <!-- Nama Pegawai -->
+                    <div class="col-md-12">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Pegawai</label>
+                        <div class="col-sm-9">
+                          <select
+                            class="form-control"
+                            name="pegawaiID"
+                            id="pegawaiID"
+                            required
+                          >
+                            <% for (const employee of pegawai) { %>
+                            <option value="<%= employee._id %>">
+                              <%= employee.namaPegawai %>
+                            </option>
+                            <% } %>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Jabatan -->
+                    <div class="col-md-12">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Jabatan</label>
+                        <div class="col-sm-9">
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="jabatan"
+                            id="jabatan"
+                            value="<%= pegawai[0].jabatanID.namaJabatan %>"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Tanggal -->
+                    <div class="col-md-12">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Tanggal</label>
+                        <div class="col-sm-9">
+                          <input
+                            type="date"
+                            class="form-control"
+                            name="tanggal"
+                            id="tanggal"
+                            required
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Bulan Penilaian -->
+                    <div class="col-md-12">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label"
+                          >Bulan Penilaian</label
+                        >
+                        <div class="col-sm-9">
+                          <select
+                            class="form-control"
+                            name="bulanPenilaian"
+                            id="bulanPenilaian"
+                            required
+                          >
+                            <option value="Januari">Januari</option>
+                            <option value="Februari">Februari</option>
+                            <option value="Maret">Maret</option>
+                            <option value="April">April</option>
+                            <option value="Mei">Mei</option>
+                            <option value="Juni">Juni</option>
+                            <option value="Juli">Juli</option>
+                            <option value="Agustus">Agustus</option>
+                            <option value="September">September</option>
+                            <option value="Oktober">Oktober</option>
+                            <option value="November">November</option>
+                            <option value="Desember">Desember</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Izin -->
+                    <div class="col-md-12">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Izin</label>
+                        <div class="col-sm-9">
+                          <input
+                            type="number"
+                            class="form-control"
+                            name="izin"
+                            id="izin"
+                            required
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Tanpa Izin -->
+                    <div class="col-md-12">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label"
+                          >Tanpa Izin</label
+                        >
+                        <div class="col-sm-9">
+                          <input
+                            type="number"
+                            class="form-control"
+                            name="tanpaIzin"
+                            id="tanpaIzin"
+                            required
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <% } %>
-                </td>
-                <td>
+                  <hr />
+                  <p class="card-description">Detail Penilaian</p>
                   <button
                     type="button"
-                    class="btn btn-danger"
-                    onclick="deleteCategory('<%= kategori[i]._id %>')"
+                    class="btn btn-primary mb-2"
+                    data-toggle="modal"
+                    data-target="#addCategoryModal"
                   >
-                    Delete
+                    Add Category
                   </button>
-                </td>
-              </tr>
+                  <div class="table-responsive" id="detail_penilaian">
+                    <table class="table table-bordered table-hover">
+                      <thead class="thead-light">
+                        <tr>
+                          <th class="text-center">NO</th>
+                          <th class="text-center">Keterangan</th>
+                          <th class="text-center">Nilai</th>
+                          <th class="text-center">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% for (let i = 0; i < kategori.length; i++) { %>
+                        <tr>
+                          <td class="text-center"><%= i + 1 %></td>
+                          <td><%= kategori[i].name %></td>
+                          <td class="text-center">
+                            <div
+                              class="btn-group btn-group-toggle"
+                              data-toggle="buttons"
+                            >
+                              <% const values = ['SB', 'B', 'C', 'K', 'SK']; %>
+                              <% for (let j = 0; j < values.length; j++) { %>
+                              <label class="btn btn-outline-primary">
+                                <input
+                                  type="radio"
+                                  name="kategori<%= i %>"
+                                  value="<%= values[j] %>"
+                                  id="kategori<%= i %>_<%= values[j] %>"
+                                />
+                                <%= values[j] %>
+                              </label>
+                              <% } %>
+                            </div>
+                          </td>
+                          <td class="text-center">
+                            <button
+                              type="button"
+                              class="btn btn-danger btn-sm"
+                              onclick="deleteCategory('<%= kategori[i]._id %>')"
+                            >
+                              Delete
+                            </button>
+                          </td>
+                        </tr>
 
-              <!-- Input tersembunyi untuk kategori ID -->
-              <input
-                type="hidden"
-                name="kategori<%= i %>_id"
-                value="<%= kategori[i]._id %>"
-              />
-              <% } %>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
-    </div>
-
-    <!-- Modal untuk Add Category -->
-    <div
-      class="modal fade"
-      id="addCategoryModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Add Category</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form action="/category/new" method="POST">
-              <div class="form-group">
-                <label for="name">Category</label>
-                <input type="text" class="form-control" id="name" name="name" />
+                        <!-- Input tersembunyi untuk kategori ID -->
+                        <input
+                          type="hidden"
+                          name="kategori<%= i %>_id"
+                          value="<%= kategori[i]._id %>"
+                        />
+                        <% } %>
+                      </tbody>
+                    </table>
+                  </div>
+                  <button
+                    type="submit"
+                    class="btn btn-primary my-4"
+                    data-toggle="modal"
+                    data-target="#addCategoryModal"
+                  >
+                    Submit
+                  </button>
+                </form>
               </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- content-wrapper ends -->
+      <!-- partial:../../partials/_footer.html -->
+      <%- include('../partials/_footer') %>
+      <!-- partial -->
     </div>
+  </div>
+</div>
 
-    <script>
-      const pegawaiSelect = document.getElementById("pegawaiID");
-      const jabatanInput = document.getElementById("jabatan");
-      const pegawaiData = <%- JSON.stringify(pegawai) %>;
+<!-- Modal untuk Add Category -->
+<div
+  class="modal fade"
+  id="addCategoryModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Category</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/category/new" method="POST">
+          <div class="form-group">
+            <label for="name">Category</label>
+            <input type="text" class="form-control" id="name" name="name" />
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const pegawaiSelect = document.getElementById("pegawaiID");
+  const jabatanInput = document.getElementById("jabatan");
+  const pegawaiData = <%- JSON.stringify(pegawai) %>;
 
-      // Tambahkan event listener untuk perubahan dalam elemen select
-      pegawaiSelect.addEventListener("change", () => {
-          // Dapatkan pegawai yang dipilih
-          const selectedOption = pegawaiSelect.options[pegawaiSelect.selectedIndex];
-          // Dapatkan id pegawai dari elemen option yang dipilih
-          const selectedPegawaiId = selectedOption.value;
+  pegawaiSelect.addEventListener("change", () => {
+      const selectedOption = pegawaiSelect.options[pegawaiSelect.selectedIndex];
+      const selectedPegawaiId = selectedOption.value;
+      const selectedPegawai = pegawaiData.find((pegawai) => pegawai._id === selectedPegawaiId);
 
-          // Cari pegawai yang sesuai dengan id yang dipilih dalam data pegawai
-          const selectedPegawai = pegawaiData.find((pegawai) => pegawai._id === selectedPegawaiId);
-
-          if (selectedPegawai) {
-              // Dapatkan jabatan dari objek pegawai yang dipilih
-              const jabatan = selectedPegawai.jabatanID.namaJabatan;
-              // Set nilai jabatanInput sesuai dengan jabatan yang ditemukan
-              jabatanInput.value = jabatan;
-              console.log(jabatan);
-          }
-      });
-    </script>
-    <!-- Tambahkan kode berikut di dalam elemen <script> Anda -->
-    <script>
-      function deleteCategory(categoryId) {
-        console.log(categoryId);
-        // Konfirmasi pengguna sebelum menghapus
-        if (confirm("Anda yakin ingin menghapus kategori ini?")) {
-          // Buat objek permintaan XMLHttpRequest
-          var xhr = new XMLHttpRequest();
-
-          // Tentukan metode dan URL permintaan
-          xhr.open(
-            "POST",
-            `/category/delete/${categoryId}?_method=DELETE`,
-            true
-          );
-
-          // Atur penanganan respons permintaan
-          xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-              if (xhr.status === 200) {
-                // Sukses, lakukan tindakan yang diperlukan
-                alert("Kategori berhasil dihapus.");
-                // Contoh: Memuat ulang halaman setelah penghapusan kategori
-                window.location.reload();
-              } else {
-                // Ada kesalahan dalam permintaan, tampilkan pesan kesalahan
-                alert("Terjadi kesalahan saat menghapus kategori.");
-              }
-            }
-          };
-
-          // Kirim permintaan
-          xhr.send();
-        }
+      if (selectedPegawai) {
+          const jabatan = selectedPegawai.jabatanID.namaJabatan;
+          jabatanInput.value = jabatan;
       }
-    </script>
-
-    <!-- Include Bootstrap JS (optional) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  </body>
-</html>
+  });
+</script>
+<script>
+  function deleteCategory(categoryId) {
+    if (confirm("Anda yakin ingin menghapus kategori ini?")) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", `/category/delete/${categoryId}?_method=DELETE`, true);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            alert("Kategori berhasil dihapus.");
+            window.location.reload();
+          } else {
+            window.location.reload();
+            alert("Kategori berhasil dihapus.");
+          }
+        }
+      };
+      xhr.send();
+    }
+  }
+</script>

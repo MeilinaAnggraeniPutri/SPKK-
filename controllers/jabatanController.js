@@ -4,28 +4,24 @@ const Penilaian = require('../models/penilaian');
 
 class jabatanController{
     static async index(req, res, next){
-        let page = parseInt(req.query.page) || 1;
-        if(page < 1) page = 1;
-        const limit = 5;
-        const skip = (page - 1) * limit;
-        
-        const totalJabatan = await Jabatan.countDocuments();
-        const totalPages = Math.ceil(totalJabatan / limit);
-        
-        const jabatan = await Jabatan.find().skip(skip).limit(limit);
-        
+        const jabatan = await Jabatan.find();
         res.render('jabatan/index', {
-            jabatan,
-            currentPage: page,
-            totalPages
+            jabatan
         });
     }
 
     static async createJabatan(req, res, next){
         const {namaJabatan} = req.body;
         const jabatan = new Jabatan({namaJabatan});
-        console.log(jabatan);
         await jabatan.save();
+        res.redirect(`/jabatan`);
+    }
+
+    static async editJabatan(req, res, next){
+        const { id} = req.params;
+        const { namaJabatan } = req.body;
+        console.log(namaJabatan);
+        const newJabatan = await Jabatan.findByIdAndUpdate(id, { namaJabatan });
         res.redirect(`/jabatan`);
     }
 

@@ -24,13 +24,13 @@ class categoryController{
         const category = new Category({name});
         console.log(category);
         await category.save();
-        res.redirect(`/penilaian/new`);
+        res.redirect(`/addPenilaian`);
     }
 
     static async deleteCategory(req, res, next){
         const { id } = req.params;
         await Category.findByIdAndDelete(id);
-        res.redirect(`/penilaian/new`);
+        res.redirect(`/addPenilaian`);
     }
 }
 

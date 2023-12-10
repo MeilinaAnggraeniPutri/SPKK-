@@ -29,7 +29,7 @@ const PenilaianSchema = new Schema({
     DetailPenilaian : [{
         categoryID: {
             type: Schema.Types.ObjectId,
-            ref: 'category'
+            ref: 'Category'
         },
         nilai: {
             type: Number,

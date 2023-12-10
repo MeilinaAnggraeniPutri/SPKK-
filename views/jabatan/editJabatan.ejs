@@ -1,0 +1,80 @@
+<!-- Add New Jabatan Modal -->
+<div
+  class="modal fade"
+  id="editJabatanModal"
+  tabindex="-1"
+  aria-labelledby="editJabatanModalLabel"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-scrollable modal-md"
+    style="max-height: 80vh"
+  >
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="editJabatanModalLabel">Edit Jabatan</h5>
+        <button
+          type="button"
+          class="close text-white"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Your form or other content goes here -->
+        <form action="/jabatan/edit" method="POST" id="editJabatanForm">
+          <div class="form-group">
+            <label for="jabatan-name">Nama Jabatan</label>
+            <input
+              type="text"
+              class="form-control"
+              id="jabatan-name"
+              name="namaJabatan"
+              value="<%= jabatan ? jabatan.namaJabatan : '' %>"
+              placeholder="Manager..."
+            />
+          </div>
+          <input type="hidden" id="idJabatan" name="idJabatan" value="" />
+          <!-- Add other fields if necessary -->
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Simpan</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Tutup
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add this script tag before your script that uses $ (jQuery) -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $(document).on("show.bs.modal", "#editJabatanModal", function (event) {
+      var button = $(event.relatedTarget); // Button that triggered the modal
+      var idJabatan = button.data("id"); // Extract info from data-* attributes
+
+      // Update the form fields within the specific modal
+      var modal = $(this);
+      modal.find("#idJabatan").val(idJabatan);
+      modal.find("#jabatan-name").val(button.data("nama"));
+
+      // Build the URL for the form action with ID Jabatan as a query parameter
+      // var actionUrl = "/jabatan/edit?idJabatan=" + idJabatan;
+      var actionUrl = "/jabatan/edit/" + idJabatan + "?_method=PUT";
+
+      // Set the form action attribute and method
+      $("#editJabatanForm").attr("action", actionUrl);
+      $("#editJabatanForm").attr("method", "POST");
+    });
+  });
+</script>

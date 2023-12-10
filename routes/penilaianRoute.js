@@ -8,8 +8,11 @@ router.route('/')
     .get(catchAsync(penilainController.index))
 
 router.route('/new')
-    .get(catchAsync(penilainController.renderCreateForm))
-    .post(catchAsync(penilainController.createpenilain))
+.get(penilainController.addPenilaian)
+    .post(catchAsync(penilainController.createPenilaian))
+    
+router.route('/:id')
+.get(catchAsync(penilainController.detaillPenilaian))
 
 router.route('/delete/:id')
     .delete(catchAsync(penilainController.deletePenilaian))

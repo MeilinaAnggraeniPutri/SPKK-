@@ -1,0 +1,159 @@
+<% layout('layouts/boilerplate') %>
+<div class="container-scroller">
+  <%- include('../partials/_navbar') %>
+  <div class="container-fluid page-body-wrapper">
+    <%- include('../partials/_settings-panel') %> <%-
+    include('../partials/_sidebar') %>
+    <div class="main-panel">
+      <div class="content-wrapper">
+        <div class="row">
+          <!-- Jabatan -->
+          <div class="col-md-12">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Nama Pegawai</label>
+              <div class="col-sm-9">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="jabatan"
+                  id="jabatan"
+                  value="<%= penilaian.pegawaiID.namaPegawai %>"
+                  readonly
+                />
+              </div>
+            </div>
+          </div>
+          <!-- Jabatan -->
+          <div class="col-md-12">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Jabatan</label>
+              <div class="col-sm-9">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="jabatan"
+                  id="jabatan"
+                  value="<%= penilaian.pegawaiID.jabatanID.namaJabatan %>"
+                  readonly
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Tanggal -->
+          <div class="col-md-12">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Tanggal</label>
+              <div class="col-sm-9">
+                <input
+                  readonly
+                  type="date"
+                  class="form-control"
+                  name="tanggal"
+                  id="tanggal"
+                  value="<%= penilaian.tanggal %>"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Jabatan -->
+          <div class="col-md-12">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Bulan Penilaian</label>
+              <div class="col-sm-9">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="jabatan"
+                  id="jabatan"
+                  value="<%= penilaian.bulanPenilaian %>"
+                  readonly
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Izin</label>
+              <div class="col-sm-9">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="jabatan"
+                  id="jabatan"
+                  value="<%= penilaian.izin %>"
+                  readonly
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Tanpa Izin</label>
+              <div class="col-sm-9">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="jabatan"
+                  id="jabatan"
+                  value="<%= penilaian.tanpaIzin %>"
+                  readonly
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <p class="card-description">Detail Penilaian</p>
+        <div class="table-responsive" id="detail_penilaian">
+          <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+              <tr>
+                <th class="text-center">NO</th>
+                <th class="text-center">Keterangan</th>
+                <th class="text-center">Nilai</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for (let i = 0; i < penilaian.DetailPenilaian.length; i++) { %>
+              <tr>
+                <td class="text-center"><%= i + 1 %></td>
+                <td><%= penilaian.DetailPenilaian[i].categoryID.name %></td>
+                <td class="text-center">
+                  <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <% const values = ['SB', 'B', 'C', 'K', 'SK']; %> <% for
+                    (let j = 0; j < values.length; j++) { %>
+                    <label
+                      class="btn btn-outline-primary <%= penilaian.DetailPenilaian[i].nilai === 5 && values[j] === 'SB' ? 'bg-primary text-white' : '' %> <%= penilaian.DetailPenilaian[i].nilai === 4 && values[j] === 'B' ? 'bg-primary text-white' : '' %> <%= penilaian.DetailPenilaian[i].nilai === 3 && values[j] === 'C' ? 'bg-primary text-white' : '' %> <%= penilaian.DetailPenilaian[i].nilai === 2 && values[j] === 'K' ? 'bg-primary text-white' : '' %> <%= penilaian.DetailPenilaian[i].nilai === 1 && values[j] === 'SK' ? 'bg-primary text-white' : '' %>"
+                    >
+                      <input
+                        disabled
+                        readonly
+                        type="radio"
+                        name="kategori<%= i %>"
+                        value="<%= values[j] %>"
+                        id="kategori<%= i %>_<%= values[j] %>"
+                      />
+                      <%= values[j] %>
+                    </label>
+                    <% } %>
+                  </div>
+                </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- content-wrapper ends -->
+      <!-- partial:../../partials/_footer.html -->
+      <%- include('../partials/_footer') %>
+      <!-- partial -->
+    </div>
+  </div>
+</div>

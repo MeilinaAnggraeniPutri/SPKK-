@@ -14,7 +14,8 @@ const User = require('./models/user');
 
 
 //connecting to mongoose
-const url = 'mongodb+srv://spkk:zdUDQBysWklUHKjM@cluster0.vkvafaw.mongodb.net/?retryWrites=true&w=majority';
+// const url = 'mongodb+srv://spkk:zdUDQBysWklUHKjM@cluster0.vkvafaw.mongodb.net/?retryWrites=true&w=majority';
+const url = 'mongodb://127.0.0.1:27017/SPKK';
 mongoose.connect(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -36,7 +37,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, '/public')));
-app.set('views', path.join(__dirname, '/views'));
+// app.set('views', path.join(__dirname, '/views'));
 
 
 const sessionConfig = {
