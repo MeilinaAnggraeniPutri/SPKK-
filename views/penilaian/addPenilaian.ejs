@@ -129,22 +129,14 @@
                   </div>
                   <hr />
                   <p class="card-description">Detail Penilaian</p>
-                  <button
-                    type="button"
-                    class="btn btn-primary mb-2"
-                    data-toggle="modal"
-                    data-target="#addCategoryModal"
-                  >
-                    Add Category
-                  </button>
                   <div class="table-responsive" id="detail_penilaian">
                     <table class="table table-bordered table-hover">
                       <thead class="thead-light">
                         <tr>
                           <th class="text-center">NO</th>
-                          <th class="text-center">Keterangan</th>
-                          <th class="text-center">Nilai</th>
-                          <th class="text-center">Action</th>
+                          <th class="text-center">Kriteria</th>
+                          <th class="text-center">Sub-Kriteria</th>
+                          <th class="text-center">Dokumen Bukti</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -152,33 +144,21 @@
                         <tr>
                           <td class="text-center"><%= i + 1 %></td>
                           <td><%= kategori[i].name %></td>
-                          <td class="text-center">
-                            <div
-                              class="btn-group btn-group-toggle"
-                              data-toggle="buttons"
-                            >
-                              <% const values = ['SB', 'B', 'C', 'K', 'SK']; %>
-                              <% for (let j = 0; j < values.length; j++) { %>
-                              <label class="btn btn-outline-primary">
-                                <input
-                                  type="radio"
-                                  name="kategori<%= i %>"
-                                  value="<%= values[j] %>"
-                                  id="kategori<%= i %>_<%= values[j] %>"
-                                />
-                                <%= values[j] %>
-                              </label>
-                              <% } %>
-                            </div>
+                          <td>
+                            <% for (let j = 0; j < kategori[i].subCriterias.length; j++) { %>
+                              <ul>
+                                <p><%= kategori[i].subCriterias[j] %></p>
+                                <input class="form-control" type="number" name=<%= kategori[i].subCriterias[j] %> min="0" max=<%= kategori[i].maxValues[j] %> value=<%= kategori[i].maxValues[j] %>>
+                              </ul>
+                            <% } %>
                           </td>
-                          <td class="text-center">
-                            <button
-                              type="button"
-                              class="btn btn-danger btn-sm"
-                              onclick="deleteCategory('<%= kategori[i]._id %>')"
-                            >
-                              Delete
-                            </button>
+                          <td class="text-left">
+                            <% for (let j = 0; j < kategori[i].documents.length; j++) { %>
+                              <ul>
+                                <b><p><%= kategori[i].documents[j] %></p></b>
+                                <input type="file" accept=".pdf">
+                              </ul>
+                            <% } %>
                           </td>
                         </tr>
 
@@ -215,44 +195,10 @@
   </div>
 </div>
 
-<!-- Modal untuk Add Category -->
-<div
-  class="modal fade"
-  id="addCategoryModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add Category</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="/category/new" method="POST">
-          <div class="form-group">
-            <label for="name">Category</label>
-            <input type="text" class="form-control" id="name" name="name" />
-          </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
 <script>
   const pegawaiSelect = document.getElementById("pegawaiID");
   const jabatanInput = document.getElementById("jabatan");
-  const pegawaiData = <%- JSON.stringify(pegawai) %>;
+  const pegawaiData = JSON.stringify("pegawai");
 
   pegawaiSelect.addEventListener("change", () => {
       const selectedOption = pegawaiSelect.options[pegawaiSelect.selectedIndex];
@@ -264,24 +210,4 @@
           jabatanInput.value = jabatan;
       }
   });
-</script>
-<script>
-  function deleteCategory(categoryId) {
-    if (confirm("Anda yakin ingin menghapus kategori ini?")) {
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", `/category/delete/${categoryId}?_method=DELETE`, true);
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-          if (xhr.status === 200) {
-            alert("Kategori berhasil dihapus.");
-            window.location.reload();
-          } else {
-            window.location.reload();
-            alert("Kategori berhasil dihapus.");
-          }
-        }
-      };
-      xhr.send();
-    }
-  }
 </script>

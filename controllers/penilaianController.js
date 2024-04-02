@@ -47,7 +47,7 @@ class PenilaianController {
 
 
   static async addPenilaian(req, res, next) {
-    console.log("asdasds");
+    console.log("Penilaian Baru Ditambahkan");
     const pegawai = await Pegawai.find({}).populate('jabatanID');
     const kategori = await Kategori.find({});
     res.render('penilaian/addPenilaian', { pegawai, kategori });

@@ -11,11 +11,11 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 
-
-
 //connecting to mongoose
 // const url = 'mongodb+srv://spkk:zdUDQBysWklUHKjM@cluster0.vkvafaw.mongodb.net/?retryWrites=true&w=majority';
-const url = 'mongodb://127.0.0.1:27017/SPKK';
+// const url = 'mongodb://127.0.0.1:27017/SPKK';
+const url = 'mongodb+srv://spkk:W0tQC9X7Q7VUKoxb@cluster0.ozuepnz.mongodb.net/';
+
 mongoose.connect(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true
