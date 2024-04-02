@@ -104,6 +104,7 @@
                             class="form-control"
                             name="izin"
                             id="izin"
+                            value="0"
                             required
                           />
                         </div>
@@ -121,6 +122,7 @@
                             class="form-control"
                             name="tanpaIzin"
                             id="tanpaIzin"
+                            value="0"
                             required
                           />
                         </div>
@@ -210,4 +212,7 @@
           jabatanInput.value = jabatan;
       }
   });
+
+  const today = new Date().toISOString().slice(0, 10);
+  document.getElementById('tanggal').value = today;
 </script>

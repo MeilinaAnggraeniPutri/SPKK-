@@ -20,22 +20,10 @@ class PenilaianController {
 
   static async createPenilaian(req, res, next) {
     try {
-      const { pegawaiID, tanggal, bulanPenilaian, izin, tanpaIzin } = req.body;
+      const { pegawaiID, tanggal, bulanPenilaian, izin, tanpaIzin,  } = req.body;
       const penilaian = new Penilaian({ pegawaiID, tanggal, bulanPenilaian, izin, tanpaIzin });
 
       let totalNilai = 0;
-      const kategoriCount = await Kategori.countDocuments({});
-
-      for (let i = 0; i < kategoriCount; i++) {
-        const kategoriID = req.body[`kategori${i}_id`];
-        const nilaiHuruf = req.body[`kategori${i}`];
-        const nilaiMapping = { SB: 5, B: 4, C: 3, K: 2, SK: 1 };
-        const nilai = nilaiMapping[nilaiHuruf] || 0;
-        totalNilai += nilai;
-        console.log('sebelum push');
-        console.log({ kategoriID, nilai });
-        penilaian.DetailPenilaian.push({ categoryID: kategoriID, nilai });
-      }
 
       penilaian.total_nilai = totalNilai;
       await penilaian.save();
@@ -47,7 +35,7 @@ class PenilaianController {
 
 
   static async addPenilaian(req, res, next) {
-    console.log("Penilaian Baru Ditambahkan");
+    // console.log("Penilaian Baru Ditambahkan");
     const pegawai = await Pegawai.find({}).populate('jabatanID');
     const kategori = await Kategori.find({});
     res.render('penilaian/addPenilaian', { pegawai, kategori });

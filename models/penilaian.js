@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Kriteria = require('../models/criteria')
 
 const PenilaianSchema = new Schema({
     pegawaiID: {
@@ -26,17 +27,7 @@ const PenilaianSchema = new Schema({
         type: Number,
         required: true
     },
-    DetailPenilaian : [{
-        categoryID: {
-            type: Schema.Types.ObjectId,
-            ref: 'Category'
-        },
-        nilai: {
-            type: Number,
-            required: true
-        }
-    }]
-
+    kriteria: [KriteriaSchema]
 });
 
 module.exports = mongoose.model('Penilaian', PenilaianSchema);
