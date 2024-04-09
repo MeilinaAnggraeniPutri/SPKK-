@@ -19,13 +19,41 @@ class PenilaianController {
 
 
   static async createPenilaian(req, res, next) {
+    const kategori = await Kategori.find({});
+
     try {
-      const { pegawaiID, tanggal, bulanPenilaian, izin, tanpaIzin,  } = req.body;
-      const penilaian = new Penilaian({ pegawaiID, tanggal, bulanPenilaian, izin, tanpaIzin });
+      const { pegawaiID, tanggal, bulanPenilaian, izin, tanpaIzin} = req.body;
 
-      let totalNilai = 0;
+      const criterias = [];
 
-      penilaian.total_nilai = totalNilai;
+      for (let i = 0; i < kategori.length; i++) {
+        const criteria = [];
+        const files = [];
+        const criteriaType = req.body[`criteriaType-${i}`];
+
+        for (let j = 0; j < kategori[i].subCriterias.length; j++) {
+          const subCriteria = req.body[`subCriteria-${i}-${j}`];
+
+          criteria.push(subCriteria);
+        }
+
+        for (let j = 0; j < kategori[i].documents.length; j++) {
+          const file = req.body[`file-${i}-${j}`];
+          files.push(file);
+        }
+
+        const fuse = {
+          subCriteria: criteria,
+          document: files,
+          criteriaType: criteriaType
+        };
+
+        criterias.push(fuse);
+      };
+
+      const penilaian = new Penilaian({ pegawaiID, tanggal, bulanPenilaian, izin, tanpaIzin, criterias});
+      console.log(penilaian.criterias[0].subCriteria);
+
       await penilaian.save();
       res.redirect('/penilaian');
     } catch (err) {

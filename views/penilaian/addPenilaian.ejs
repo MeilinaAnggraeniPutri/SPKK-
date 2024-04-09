@@ -150,7 +150,7 @@
                             <% for (let j = 0; j < kategori[i].subCriterias.length; j++) { %>
                               <ul>
                                 <p><%= kategori[i].subCriterias[j] %></p>
-                                <input class="form-control" type="number" name=<%= kategori[i].subCriterias[j] %> min="0" max=<%= kategori[i].maxValues[j] %> value=<%= kategori[i].maxValues[j] %>>
+                                <input class="form-control" type="number" name="subCriteria-<%= i%>-<%= j%>" min="0" max=<%= kategori[i].maxValues[j] %> value=<%= kategori[i].maxValues[j] %>>
                               </ul>
                             <% } %>
                           </td>
@@ -158,7 +158,7 @@
                             <% for (let j = 0; j < kategori[i].documents.length; j++) { %>
                               <ul>
                                 <b><p><%= kategori[i].documents[j] %></p></b>
-                                <input type="file" accept=".pdf">
+                                <input type="file" name="file-<%= i%>-<%= j%>" accept=".pdf">
                               </ul>
                             <% } %>
                           </td>
@@ -167,8 +167,8 @@
                         <!-- Input tersembunyi untuk kategori ID -->
                         <input
                           type="hidden"
-                          name="kategori<%= i %>_id"
-                          value="<%= kategori[i]._id %>"
+                          name="criteriaType-<%= i %>"
+                          value="<%= kategori[i].categoryType %>"
                         />
                         <% } %>
                       </tbody>

@@ -23,11 +23,10 @@ const PenilaianSchema = new Schema({
         type: Number,
         required: true
     },
-    total_nilai: {
-        type: Number,
+    criterias: {
+        type: [Kriteria],
         required: true
-    },
-    kriteria: [KriteriaSchema]
+    }
 });
 
 module.exports = mongoose.model('Penilaian', PenilaianSchema);

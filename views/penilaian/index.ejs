@@ -40,7 +40,6 @@
                         <th>Penilaian Bulan</th>
                         <th>Izin</th>
                         <th>Tanpa Izin</th>
-                        <th>Total Nilai</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -53,32 +52,6 @@
                         <td><%= item.bulanPenilaian %></td>
                         <td><%= item.izin %></td>
                         <td><%= item.tanpaIzin %></td>
-                        <td>
-                          <% var percentage = (item.total_nilai / 20) * 100; %>
-                          <% var colorClass = ''; %> <% if (item.total_nilai <
-                          5) { %> <% colorClass = 'bg-danger'; %> <% } else if
-                          (item.total_nilai < 10) { %> <% colorClass =
-                          'bg-warning'; %> <% } else if (item.total_nilai < 15)
-                          { %> <% colorClass = 'bg-info'; %> <% } else { %> <%
-                          colorClass = 'bg-success'; %> <% } %>
-
-                          <div
-                            class="progress"
-                            style="width: 100px; height: 15px"
-                          >
-                            <div
-                              class="progress-bar <%= colorClass %>"
-                              role="progressbar"
-                              style="width: <%= percentage %>%"
-                              aria-valuenow="<%= item.total_nilai %>"
-                              aria-valuemin="0"
-                              aria-valuemax="20"
-                            >
-                              <%= item.total_nilai %>
-                            </div>
-                          </div>
-                        </td>
-
                         <td>
                           <div class="d-flex">
                             <button
