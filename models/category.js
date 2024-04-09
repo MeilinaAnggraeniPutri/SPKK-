@@ -6,7 +6,8 @@ const CategorySchema = new Schema({
     subCriterias: [String],
     maxValues: [Number],
     documents: [String],
-    categoryType: Number
+    categoryType: Number,
+    weight: Number,
 });
 
 module.exports = mongoose.model('Category', CategorySchema);

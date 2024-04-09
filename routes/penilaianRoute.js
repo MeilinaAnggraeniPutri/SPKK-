@@ -17,5 +17,7 @@ router.route('/:id')
 router.route('/delete/:id')
     .delete(catchAsync(penilainController.deletePenilaian))
 
+router.route('/ranking')
+    .get(catchAsync(penilainController.rankPenilaian))
 
 module.exports = router;

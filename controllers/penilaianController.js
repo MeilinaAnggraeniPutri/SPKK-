@@ -29,7 +29,6 @@ class PenilaianController {
       for (let i = 0; i < kategori.length; i++) {
         const criteria = [];
         const files = [];
-        const criteriaType = req.body[`criteriaType-${i}`];
 
         for (let j = 0; j < kategori[i].subCriterias.length; j++) {
           const subCriteria = req.body[`subCriteria-${i}-${j}`];
@@ -45,14 +44,12 @@ class PenilaianController {
         const fuse = {
           subCriteria: criteria,
           document: files,
-          criteriaType: criteriaType
         };
 
         criterias.push(fuse);
       };
 
       const penilaian = new Penilaian({ pegawaiID, tanggal, bulanPenilaian, izin, tanpaIzin, criterias});
-      console.log(penilaian.criterias[0].subCriteria);
 
       await penilaian.save();
       res.redirect('/penilaian');
@@ -97,6 +94,14 @@ static async detaillPenilaian(req, res, next) {
       const { id } = req.params;
       await Penilaian.findByIdAndDelete(id);
       res.redirect('/penilaian');
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async rankPenilaian(req, res, next) {
+    try {
+      const penilaian = await Penilaian.find({}).populate('pegawaiID');
     } catch (err) {
       next(err);
     }

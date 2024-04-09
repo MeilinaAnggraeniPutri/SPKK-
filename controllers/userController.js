@@ -9,7 +9,7 @@ class UserController {
         try {
             const { email, username, password } = req.body;
             const user = new User({ email, username });
-            console.log(user)
+            // console.log(user)
             const registeredUser = await User.register(user, password);
             req.login(registeredUser, err => {
                 if (err) return next(err);
