@@ -2,6 +2,7 @@ const Penilaian = require('../models/penilaian');
 const Pegawai = require('../models/pegawai');
 const Kategori = require('../models/category');
 const moment = require('moment');
+const {getMatriksKeputusan} = require("../assets/js/gmm")
 
 class PenilaianController {
   static async index(req, res, next) {
@@ -101,7 +102,17 @@ static async detaillPenilaian(req, res, next) {
 
   static async rankPenilaian(req, res, next) {
     try {
-      const penilaian = await Penilaian.find({}).populate('pegawaiID');
+      const pegawaiId = await Pegawai.find({}, {_id: 1});
+      const matriksKeputusan = await getMatriksKeputusan(Penilaian, pegawaiId);
+      console.log(matriksKeputusan);
+
+      // const penilaian = await Penilaian.find({}, {_id: 0, pegawaiID: 1, 'criterias.subCriteria': 1});
+      // console.log(penilaian);
+
+      // const kategori = await Kategori.find({}, {_id: 0, categoryType: 1, weight: 1});
+      // console.log(kategori);
+
+      res.render('penilaian/rankPenilaian');
     } catch (err) {
       next(err);
     }

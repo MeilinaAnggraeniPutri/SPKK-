@@ -208,4 +208,7 @@
 
   const today = new Date().toISOString().slice(0, 10);
   document.getElementById('tanggal').value = today;
+
+  const bulanIni = new Date().toLocaleString('id-ID', { month: 'long' });
+  document.getElementById('bulanPenilaian').value = bulanIni;
 </script>

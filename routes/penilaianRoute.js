@@ -10,14 +10,14 @@ router.route('/')
 router.route('/new')
 .get(penilainController.addPenilaian)
     .post(catchAsync(penilainController.createPenilaian))
+
+router.route('/ranking')
+.get(catchAsync(penilainController.rankPenilaian))
     
 router.route('/:id')
 .get(catchAsync(penilainController.detaillPenilaian))
 
 router.route('/delete/:id')
     .delete(catchAsync(penilainController.deletePenilaian))
-
-router.route('/ranking')
-    .get(catchAsync(penilainController.rankPenilaian))
 
 module.exports = router;
