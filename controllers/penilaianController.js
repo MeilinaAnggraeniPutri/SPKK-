@@ -3,6 +3,7 @@ const Pegawai = require('../models/pegawai');
 const Kategori = require('../models/category');
 const moment = require('moment');
 const {getMatriksKeputusan} = require("../assets/js/gmm")
+const {normalisasiMatriks} = require("../assets/js/topsis")
 
 class PenilaianController {
   static async index(req, res, next) {
@@ -104,7 +105,7 @@ static async detaillPenilaian(req, res, next) {
     try {
       const pegawaiId = await Pegawai.find({}, {_id: 1});
       const matriksKeputusan = await getMatriksKeputusan(Penilaian, pegawaiId);
-      console.log(matriksKeputusan);
+      const matriksTernormalisasi = await normalisasiMatriks(matriksKeputusan);
 
       // const penilaian = await Penilaian.find({}, {_id: 0, pegawaiID: 1, 'criterias.subCriteria': 1});
       // console.log(penilaian);
