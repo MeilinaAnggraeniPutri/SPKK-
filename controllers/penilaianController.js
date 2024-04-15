@@ -2,8 +2,10 @@ const Penilaian = require('../models/penilaian');
 const Pegawai = require('../models/pegawai');
 const Kategori = require('../models/category');
 const moment = require('moment');
-const {getMatriksKeputusan} = require("../assets/js/gmm")
-const {normalisasiMatriks} = require("../assets/js/topsis")
+
+const {getMatriksKeputusan} = require("../assets/js/gmm");
+const {normalisasiMatriks} = require("../assets/js/topsis");
+const {pembobotanMatriks} = require("../assets/js/topsis");
 
 class PenilaianController {
   static async index(req, res, next) {
@@ -103,15 +105,20 @@ static async detaillPenilaian(req, res, next) {
 
   static async rankPenilaian(req, res, next) {
     try {
+      // Operasi GMM
       const pegawaiId = await Pegawai.find({}, {_id: 1});
       const matriksKeputusan = await getMatriksKeputusan(Penilaian, pegawaiId);
+
+      // Operasi Topsis
       const matriksTernormalisasi = await normalisasiMatriks(matriksKeputusan);
+
+      const bobotData = await Kategori.find({}, {_id: 0, weight: 1});
+      const bobot = bobotData.map(item => item.weight);
+      const matriksTerbobot = await pembobotanMatriks(matriksTernormalisasi, bobot);
+      console.log(matriksTerbobot);
 
       // const penilaian = await Penilaian.find({}, {_id: 0, pegawaiID: 1, 'criterias.subCriteria': 1});
       // console.log(penilaian);
-
-      // const kategori = await Kategori.find({}, {_id: 0, categoryType: 1, weight: 1});
-      // console.log(kategori);
 
       res.render('penilaian/rankPenilaian');
     } catch (err) {

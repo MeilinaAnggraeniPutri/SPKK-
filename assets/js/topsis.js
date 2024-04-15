@@ -34,8 +34,28 @@ exports.normalisasiMatriks = async function(matriksKeputusan) {
             matriksTernormalisasi.push(rowMatriks);
         }
 
-        console.log(matriksTernormalisasi);
+        return matriksTernormalisasi ;
 
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+exports.pembobotanMatriks = async function(matriksTernormalisasi, bobot) {
+    try {
+        var matriksTerbobot = [];
+
+        // Perhirungan Matriks Normalisasi Terbobot
+        for (var i = 0; i < matriksTernormalisasi.length; i++) {
+            var rowMatriks = [];
+
+            for (var j = 0; j < matriksTernormalisasi[i].length; j++) {
+                var nilaiTerbobot = matriksTernormalisasi[i][j] * bobot[j];
+                rowMatriks.push(nilaiTerbobot);
+            }
+            matriksTerbobot.push(rowMatriks);
+        }
+        return matriksTerbobot;
     } catch (e) {
         console.log(e);
     }
