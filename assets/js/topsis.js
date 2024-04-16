@@ -129,3 +129,19 @@ exports.getJarakIdeal = async function (matriksTerbobot, solusiIdeal) {
         console.log(e);
     }
 }
+
+// Function untuk memperoleh nilai preferensi tiap alternatif
+exports.getNilaiPreferensi = async function(jarakIdealPositif, jarakIdealNegatif) {
+    try {
+        var listNilaiPreferensi = [];
+
+        for (var i = 0; i < jarakIdealPositif.length; i++) {
+            var hasil = jarakIdealNegatif[i] / (jarakIdealNegatif[i] + jarakIdealPositif[i]);
+            listNilaiPreferensi.push(hasil);
+        }
+        
+        return listNilaiPreferensi;
+    } catch (e) {
+        console.log(e);
+    }
+}
