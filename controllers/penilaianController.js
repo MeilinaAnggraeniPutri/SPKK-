@@ -7,6 +7,7 @@ const {getMatriksKeputusan} = require("../assets/js/gmm");
 const {normalisasiMatriks} = require("../assets/js/topsis");
 const {pembobotanMatriks} = require("../assets/js/topsis");
 const {getSolusiIdeal} = require("../assets/js/topsis");
+const {getJarakIdeal} = require("../assets/js/topsis");
 
 class PenilaianController {
   static async index(req, res, next) {
@@ -125,10 +126,9 @@ static async detaillPenilaian(req, res, next) {
       const solusiIdealPositif = await getSolusiIdeal(matriksTerbobot, tipeCriteria, 1);
       const solusiIdealNegatif = await getSolusiIdeal(matriksTerbobot, tipeCriteria, 0);
 
-      console.log('Solusi Ideal Positif')
-      console.log(solusiIdealPositif);
-      console.log('Solusi Ideal Negatif')
-      console.log(solusiIdealNegatif);
+      // Jarak Ideal Positif dan Negatif
+      const jarakIdealPositif = await getJarakIdeal(matriksTerbobot, solusiIdealPositif);
+      const jarakIdealNegatif = await getJarakIdeal(matriksTerbobot, solusiIdealNegatif);
 
       res.render('penilaian/rankPenilaian');
     } catch (err) {

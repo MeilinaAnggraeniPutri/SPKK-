@@ -66,7 +66,7 @@ exports.pembobotanMatriks = async function(matriksTernormalisasi, bobot) {
 exports.getSolusiIdeal = async function(matriksTerbobot, tipeCriteria, tipeSolusi)  {
     try {
         // tipeCriteria => 0: cost, 1: benefit
-        // tipeSolusi => 0: negatif, 1: positif 
+        // tipeSolusi => 0: negatif, 1: positif
         
         // Tranpose Matriks untuk operasi nilai setiap kriteria
         var tranpose = matriksTerbobot.reduce((acc, val) => {
@@ -103,6 +103,28 @@ exports.getSolusiIdeal = async function(matriksTerbobot, tipeCriteria, tipeSolus
         }
 
         return solusiIdeal;
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+// Function untuk memperoleh jarak ideal
+exports.getJarakIdeal = async function (matriksTerbobot, solusiIdeal) {
+    try {
+        var jarakIdeal = [];
+
+        for (var i = 0; i < matriksTerbobot.length; i++) {
+            var hasil = 0;
+            for (var j = 0; j < solusiIdeal.length; j++) {
+                var squaredSum = (solusiIdeal[j] - matriksTerbobot[i][j]) ** 2;
+                hasil += squaredSum;
+            }
+            var hasilSqrt = Math.sqrt(hasil);
+
+            jarakIdeal.push(hasilSqrt);
+        }
+
+        return jarakIdeal;
     } catch (e) {
         console.log(e);
     }
