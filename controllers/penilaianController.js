@@ -9,6 +9,7 @@ const {pembobotanMatriks} = require("../assets/js/topsis");
 const {getSolusiIdeal} = require("../assets/js/topsis");
 const {getJarakIdeal} = require("../assets/js/topsis");
 const {getNilaiPreferensi} = require("../assets/js/topsis");
+const {getRanking} = require("../assets/js/topsis");
 
 class PenilaianController {
   static async index(req, res, next) {
@@ -134,7 +135,10 @@ static async detaillPenilaian(req, res, next) {
       // Nilai Preferensi
       const nilaiPreferensi = await getNilaiPreferensi(jarakIdealPositif, jarakIdealNegatif);
 
-      res.render('penilaian/rankPenilaian');
+      // Perankingan Nilai Preferensi
+      const rangking = await getRanking(nilaiPreferensi);
+
+      res.render('penilaian/rankPenilaian', {nilaiPreferensi: nilaiPreferensi, rangking: rangking});
     } catch (err) {
       next(err);
     }

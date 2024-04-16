@@ -145,3 +145,19 @@ exports.getNilaiPreferensi = async function(jarakIdealPositif, jarakIdealNegatif
         console.log(e);
     }
 }
+
+// Function untuk memperoleh ranking dari nilai preferensi
+exports.getRanking = async function(nilaiPreferensi) {
+    try {
+        const sortedNilai = [...nilaiPreferensi].sort((a, b) => b - a);
+
+        const rankingArray = nilaiPreferensi.map(value => {
+            const rank = sortedNilai.indexOf(value) + 1;
+            return rank;
+        });
+
+        return rankingArray;
+    } catch (e) {
+        console.log(e);
+    }
+}
