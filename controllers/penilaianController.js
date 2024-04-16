@@ -1,6 +1,8 @@
 const Penilaian = require('../models/penilaian');
 const Pegawai = require('../models/pegawai');
 const Kategori = require('../models/category');
+const Jabatan = require('../models/jabatan');
+
 const moment = require('moment');
 
 const {getMatriksKeputusan} = require("../assets/js/gmm");
@@ -138,7 +140,9 @@ static async detaillPenilaian(req, res, next) {
       // Perankingan Nilai Preferensi
       const rangking = await getRanking(nilaiPreferensi);
 
-      res.render('penilaian/rankPenilaian', {nilaiPreferensi: nilaiPreferensi, rangking: rangking});
+      const pegawai = await Pegawai.find().populate('jabatanID');
+
+      res.render('penilaian/rankPenilaian', {pegawai, nilaiPreferensi, rangking});
     } catch (err) {
       next(err);
     }

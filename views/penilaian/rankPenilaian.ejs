@@ -1,0 +1,63 @@
+<% layout('layouts/boilerplate') %>
+<div class="container-scroller">
+  <%- include('../partials/_navbar') %>
+  <div class="container-fluid page-body-wrapper">
+    <%- include('../partials/_settings-panel') %>
+    <%- include('../partials/_sidebar') %>
+    <div class="main-panel">
+      <div class="content-wrapper">
+        <div class="row">
+          <div class="col-lg-10 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <h4 class="card-title">Rangking Penilaian Karyawan</h4>
+                  </div>
+                  <div class="col-md-6 text-right">
+                    <p class="card-description">
+                      Jumlah Pegawai: <%= pegawai.length %>
+                    </p>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Nama</th>
+                        <th>NIP</th>
+                        <th>Jabatan</th>
+                        <th>Nilai</th>
+                        <th>Ranking</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% for (let i = 0; i < pegawai.length; i++) { %>
+                      <tr>
+                        <td><%= pegawai[i].namaPegawai %></td>
+                        <td><%= pegawai[i].NIP %></td>
+                        <td><%= pegawai[i].jabatanID.namaJabatan %></td>
+                        <td>
+                          <%= nilaiPreferensi[i]%>
+                        </td>
+                        <td>
+                          <%= rangking[i]%>
+                        </td>
+                      </tr>
+                      <% } %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- content-wrapper ends -->
+      <!-- partial:../../partials/_footer.html -->
+      <%- include('../partials/_footer') %>
+      <!-- partial -->
+    </div>
+  </div>
+</div>

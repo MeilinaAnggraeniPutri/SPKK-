@@ -1,6 +1,5 @@
 const Jabatan = require('../models/jabatan');
 const Pegawai = require('../models/pegawai');
-const Penilaian = require('../models/penilaian');
 
 class pegawaiController{
     
