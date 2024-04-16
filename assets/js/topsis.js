@@ -41,6 +41,7 @@ exports.normalisasiMatriks = async function(matriksKeputusan) {
     }
 }
 
+// Pebobotan Matriks Ternormalisasi
 exports.pembobotanMatriks = async function(matriksTernormalisasi, bobot) {
     try {
         var matriksTerbobot = [];
@@ -56,6 +57,52 @@ exports.pembobotanMatriks = async function(matriksTernormalisasi, bobot) {
             matriksTerbobot.push(rowMatriks);
         }
         return matriksTerbobot;
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+// Function untuk memperoleh solusi ideal
+exports.getSolusiIdeal = async function(matriksTerbobot, tipeCriteria, tipeSolusi)  {
+    try {
+        // tipeCriteria => 0: cost, 1: benefit
+        // tipeSolusi => 0: negatif, 1: positif 
+        
+        // Tranpose Matriks untuk operasi nilai setiap kriteria
+        var tranpose = matriksTerbobot.reduce((acc, val) => {
+            val.forEach((num, index) => {
+                acc[index] = acc[index] || [];
+                acc[index].push(num);
+            });
+            return acc;
+        }, []);
+
+        var solusiIdeal = [];
+
+        for (var i = 0; i < tranpose.length; i++) {
+            var solusi = 0;
+
+            if (tipeSolusi == 1) {
+                if (tipeCriteria[i] == 1) {
+                    // Positif Benefit
+                    solusi = Math.max(...tranpose[i]);
+                } else {
+                    // Positif Cost
+                    solusi = Math.min(...tranpose[i]);
+                }
+            } else {
+                if (tipeCriteria[i] == 1) {
+                    // Negatif Benefit
+                    solusi = Math.min(...tranpose[i]);
+                } else {
+                    // Negatif Cost
+                    solusi = Math.max(...tranpose[i]);
+                }
+            }
+            solusiIdeal.push(solusi);
+        }
+
+        return solusiIdeal;
     } catch (e) {
         console.log(e);
     }

@@ -6,6 +6,7 @@ const moment = require('moment');
 const {getMatriksKeputusan} = require("../assets/js/gmm");
 const {normalisasiMatriks} = require("../assets/js/topsis");
 const {pembobotanMatriks} = require("../assets/js/topsis");
+const {getSolusiIdeal} = require("../assets/js/topsis");
 
 class PenilaianController {
   static async index(req, res, next) {
@@ -110,15 +111,24 @@ static async detaillPenilaian(req, res, next) {
       const matriksKeputusan = await getMatriksKeputusan(Penilaian, pegawaiId);
 
       // Operasi Topsis
+      // Normalisasi Matriks
       const matriksTernormalisasi = await normalisasiMatriks(matriksKeputusan);
 
+      // Pembobotan Matriks
       const bobotData = await Kategori.find({}, {_id: 0, weight: 1});
       const bobot = bobotData.map(item => item.weight);
       const matriksTerbobot = await pembobotanMatriks(matriksTernormalisasi, bobot);
-      console.log(matriksTerbobot);
 
-      // const penilaian = await Penilaian.find({}, {_id: 0, pegawaiID: 1, 'criterias.subCriteria': 1});
-      // console.log(penilaian);
+      // Solusi Ideal Positif dan Negatif
+      const tipeCriteriaData = await Kategori.find({}, {_id: 0, categoryType: 1});
+      const tipeCriteria = tipeCriteriaData.map(item => item.categoryType);
+      const solusiIdealPositif = await getSolusiIdeal(matriksTerbobot, tipeCriteria, 1);
+      const solusiIdealNegatif = await getSolusiIdeal(matriksTerbobot, tipeCriteria, 0);
+
+      console.log('Solusi Ideal Positif')
+      console.log(solusiIdealPositif);
+      console.log('Solusi Ideal Negatif')
+      console.log(solusiIdealNegatif);
 
       res.render('penilaian/rankPenilaian');
     } catch (err) {
