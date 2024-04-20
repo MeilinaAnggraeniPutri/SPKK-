@@ -72,7 +72,7 @@ const penilaianRoute = require('./routes/penilaianRoute')
 const pegawaiRoute = require('./routes/pegawaiRoute')
 const categoryRoute = require('./routes/categoryRoute')
 const dashboardRoute = require('./routes/dashboardRoute')
-const userRoute = require('./routes/user')
+const userRoute = require('./routes/userRoute')
 
 app.use((req, res, next) => {
     if (req.originalUrl === '/') {
