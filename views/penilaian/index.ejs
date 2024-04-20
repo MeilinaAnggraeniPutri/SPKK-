@@ -72,19 +72,34 @@
                                 <i data-feather="edit"></i> Detail
                               </span>
                             </button>
-                            <form
-                              action="/penilaian/delete/<%= item._id %>?_method=DELETE"
-                              method="POST"
-                            >
-                              <button
-                                class="btn badge badge-danger"
-                                type="submit"
-                              >
-                                <span class="badge-danger font-weight-bold">
+                            <div>
+                              <button class="btn badge badge-danger font-weight-bold" type="button" data-toggle="modal" data-target="#deleteModal<%= item._id %>">
                                   <i data-feather="trash-2"></i> Delete
-                                </span>
                               </button>
-                            </form>
+                            </div>
+                      
+                            <!-- Modal Delete -->
+                            <div class="modal fade" id="deleteModal<%= item._id %>" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Penghapusan</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Apakah Anda yakin ingin menghapus data Penilaian ini ?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                            <form action="/penilaian/delete/<%= item._id %>?_method=DELETE" method="POST">
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                           </div>
                         </td>
                       </tr>

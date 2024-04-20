@@ -20,7 +20,6 @@ class jabatanController{
     static async editJabatan(req, res, next){
         const { id} = req.params;
         const { namaJabatan } = req.body;
-        console.log(namaJabatan);
         const newJabatan = await Jabatan.findByIdAndUpdate(id, { namaJabatan });
         res.redirect(`/jabatan`);
     }

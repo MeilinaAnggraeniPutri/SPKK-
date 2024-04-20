@@ -4,21 +4,12 @@ const Pegawai = require('../models/pegawai');
 class pegawaiController{
     
     static async index(req, res, next){
-        let page = parseInt(req.query.page) || 1;
-        if(page < 1) page = 1;
-        const limit = 5;
-        const skip = (page - 1) * limit;
-        
-        const totalPegawai = await Pegawai.countDocuments();
-        const totalPages = Math.ceil(totalPegawai / limit);
-        
-        const pegawai = await Pegawai.find().populate('jabatanID').skip(skip).limit(limit);
+        const pegawai = await Pegawai.find().populate('jabatanID');
         const allJabatans = await Jabatan.find();
         
         res.render('pegawai/index', {
             pegawai,
-            currentPage: page,
-            totalPages, allJabatans
+            allJabatans
         });
     }
 

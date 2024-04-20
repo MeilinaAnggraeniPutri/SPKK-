@@ -38,10 +38,10 @@
                         <td><%= pegawai[i].NIP %></td>
                         <td><%= pegawai[i].jabatanID.namaJabatan %></td>
                         <td>
-                          <%= nilaiPreferensi[i].toFixed(5)%>
-                        </td>
+                          <%= !isNaN(nilaiPreferensi[i]) ? nilaiPreferensi[i].toFixed(5) : 'Belum Dinilai' %>
+                        </td>                        
                         <td>
-                          <%= rangking[i]%>
+                          <%= rangking[i] !== 0 ? rangking[i] : '-' %>
                         </td>
                       </tr>
                       <% } %>
