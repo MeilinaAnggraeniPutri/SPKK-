@@ -23,10 +23,20 @@ class pegawaiController{
     }
 
     static async createPegawai(req, res, next){
-        const { namaPegawai,NIP, jabatanID } = req.body; // Corrected `jabatan` to `jabatanID`
+        const { namaPegawai, NIP, jabatanID } = req.body;
         const pegawai = new Pegawai({ NIP, namaPegawai, jabatanID });
         await pegawai.save();
         res.redirect('/pegawai');
+    }
+
+    static async updatePegawai(req, res, next) {
+        const { id } = req.params;
+        const { NIP } = req.body;
+        const { namaPegawai } = req.body;
+        const { jabatanID } = req.body;
+        const newJabatan = await Pegawai.findByIdAndUpdate(id, { NIP, namaPegawai, jabatanID });
+
+        res.redirect(`/pegawai`);
     }
 
     static async deletePegawai(req, res, next){

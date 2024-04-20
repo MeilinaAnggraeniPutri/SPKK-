@@ -10,6 +10,9 @@ router.route('/')
 router.route('/new')
     .post(catchAsync(pegawaiController.createPegawai))
 
+router.route('/edit/:id')
+    .put(catchAsync(pegawaiController.updatePegawai))
+
 router.route('/delete/:id')
     .delete(catchAsync(pegawaiController.deletePegawai))
 

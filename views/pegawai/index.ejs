@@ -3,7 +3,8 @@
   <%- include('../partials/_navbar') %>
   <div class="container-fluid page-body-wrapper">
     <%- include('../partials/_settings-panel') %> <%-
-    include('../partials/_sidebar') %> <%- include('addPegawai') %>
+    include('../partials/_sidebar') %> <%- include('addPegawai') %> <%-
+    include('editPegawai') %>
     <div class="main-panel">
       <div class="content-wrapper">
         <div class="row">
@@ -48,19 +49,20 @@
                         <td><%= pegawai.jabatanID.namaJabatan %></td>
                         <td>
                           <div class="d-flex">
-                            <form
-                              action="/pegawai/"
-                              method="POST"
+                            <button
+                              class="btn badge badge-warning mx-1 edit-pegawai"
+                              type="button"
+                              data-toggle="modal"
+                              data-target="#editPegawaiModal"
+                              data-id="<%= pegawai._id %>"
+                              data-nip="<%= pegawai.NIP %>"
+                              data-nama="<%= pegawai.namaPegawai %>"
+                              data-jabatanid="<%= pegawai.jabatanID %>"
                             >
-                              <button
-                                class="btn badge badge-warning mx-1"
-                                type="submit"
-                              >
-                                <span class="badge-warning font-weight-bold">
-                                  <i data-feather="edit"></i> Edit
-                                </span>
-                              </button>
-                            </form>
+                              <span class="badge-warning font-weight-bold">
+                                <i data-feather="edit"></i> Edit
+                              </span>
+                            </button>
 
                             <% if (unusedPegawai.includes(pegawai._id)) { %>
                               <div>

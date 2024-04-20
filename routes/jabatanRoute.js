@@ -8,11 +8,10 @@ router.route('/')
     .get(catchAsync(jabatanController.index))
 
 router.route('/new')
-    // .get(catchAsync(jabatanController.renderNewForm))
     .post(catchAsync(jabatanController.createJabatan))
 
 router.route('/edit/:id')
-    .put(catchAsync(jabatanController.editJabatan))
+    .put(catchAsync(jabatanController.updateJabatan))
 
 router.route('/delete/:id')
     .delete(catchAsync(jabatanController.deleteJabatan))

@@ -1,0 +1,106 @@
+<!-- Add New Pegawai Modal -->
+<div
+  class="modal fade"
+  id="editPegawaiModal"
+  tabindex="-1"
+  aria-labelledby="editPegawaiModalLabel"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-scrollable modal-md"
+    style="max-height: 80vh"
+  >
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="editPegawaiModalLabel">Edit Pegawai</h5>
+        <button
+          type="button"
+          class="close text-white"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Your form or other content goes here -->
+        <form action="/pegawai/edit" method="POST" id="editPegawaiForm">
+          <div class="form-group">
+            <label for="pegawai-nip">NIP</label>
+            <input
+              type="text"
+              class="form-control"
+              id="pegawai-nip"
+              name="NIP"
+              value="<%= pegawai ? pegawai.NIP : '' %>"
+              placeholder="NIP Pegawai"
+            />
+          </div>
+          <div class="form-group">
+            <label for="pegawai-name">Nama Pegawai</label>
+            <input
+              type="text"
+              class="form-control"
+              id="pegawai-nama"
+              name="namaPegawai"
+              value="<%= pegawai ? pegawai.namaPegawai : '' %>"
+              placeholder="Nama Lengkap Pegawai"
+            />
+          </div>
+          <div class="form-group">
+            <label for="jabatanID">Jabatan</label>
+            <select
+              class="form-control"
+              id="jabatanID"
+              name="jabatanID"
+              required
+            >
+              <% allJabatans.forEach(jabatan => { %>
+              <option value="<%= jabatan._id %>">
+                <%= jabatan.namaJabatan %>
+              </option>
+              <% }); %>
+            </select>
+          </div>
+          <input type="hidden" id="idPegawai" name="idPegawai" value="" />
+          <!-- Add other fields if necessary -->
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Simpan</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Tutup
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add this script tag before your script that uses $ (jQuery) -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $(document).on("show.bs.modal", "#editPegawaiModal", function (event) {
+      var button = $(event.relatedTarget); // Button that triggered the modal
+      var idPegawai = button.data("id"); // Extract info from data-* attributes
+
+      // Update the form fields within the specific modal
+      var modal = $(this);
+      modal.find("#idPegawai").val(idPegawai);
+      modal.find("#pegawai-nip").val(button.data("nip"));
+      modal.find("#pegawai-nama").val(button.data("nama"));
+
+      // Build the URL for the form action with ID Pegawai as a query parameter
+      var actionUrl = "/pegawai/edit/" + idPegawai + "?_method=PUT";
+
+      // Set the form action attribute and method
+      $("#editPegawaiForm").attr("action", actionUrl);
+      $("#editPegawaiForm").attr("method", "POST");
+    });
+  });
+</script>
