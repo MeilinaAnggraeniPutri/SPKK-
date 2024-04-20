@@ -12,8 +12,6 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 
 //connecting to mongoose
-// const url = 'mongodb+srv://spkk:zdUDQBysWklUHKjM@cluster0.vkvafaw.mongodb.net/?retryWrites=true&w=majority';
-// const url = 'mongodb://127.0.0.1:27017/SPKK';
 const url = 'mongodb+srv://spkk:W0tQC9X7Q7VUKoxb@cluster0.ozuepnz.mongodb.net/';
 
 mongoose.connect(url, {
@@ -75,8 +73,7 @@ const pegawaiRoute = require('./routes/pegawaiRoute')
 const categoryRoute = require('./routes/categoryRoute')
 const dashboardRoute = require('./routes/dashboardRoute')
 const userRoute = require('./routes/user')
-// const penilaianRoute = require('./routes/penilaianRoute')
-// const userRoute = require('./routes/userRoute')
+
 app.use((req, res, next) => {
     if (req.originalUrl === '/') {
         return res.redirect('/login');
