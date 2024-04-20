@@ -61,12 +61,21 @@
                                 </span>
                               </button>
                             </form>
-                            <div>
-                              <button class="btn badge badge-danger font-weight-bold" type="button" data-toggle="modal" data-target="#deleteModal<%= pegawai._id %>">
-                                  <i data-feather="trash-2"></i> Delete
-                              </button>
-                            </div>
-                      
+
+                            <% if (unusedPegawai.includes(pegawai._id)) { %>
+                              <div>
+                                <button class="btn badge badge-danger font-weight-bold" type="button" data-toggle="modal" data-target="#deleteModal<%= pegawai._id %>">
+                                    <i data-feather="trash-2"></i> Delete
+                                </button>
+                              </div>
+                            <% } else { %>
+                              <div>
+                                <button class="btn badge badge-secondary font-weight-bold" type="button">
+                                    <i data-feather="trash-2"></i> Used
+                                </button>
+                              </div>
+                            <% } %>
+
                             <!-- Modal Delete -->
                             <div class="modal fade" id="deleteModal<%= pegawai._id %>" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">

@@ -1,13 +1,21 @@
 const Jabatan = require('../models/jabatan');
 const Pegawai = require('../models/pegawai');
-const Penilaian = require('../models/penilaian');
 
 class jabatanController{
     static async index(req, res, next){
-        const jabatan = await Jabatan.find();
-        res.render('jabatan/index', {
-            jabatan
-        });
+        try {
+            const jabatan = await Jabatan.find();
+            const pegawai = await Pegawai.find();
+
+            const unusedJabatan = jabatan.filter(j => !pegawai.some(p => p.jabatanID.equals(j._id))).map(j => j._id);
+
+            res.render('jabatan/index', {
+                jabatan,
+                unusedJabatan
+            });
+        } catch (e) {
+            next(e);
+        }
     }
 
     static async createJabatan(req, res, next){
