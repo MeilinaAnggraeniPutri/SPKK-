@@ -14,7 +14,7 @@ class UserController {
     static async register(req, res, next) {
         try {
             const { email, username, nip, jabatanID, password } = req.body;
-            const hashedPassword = await bcrypt.hashSync(password, salt);
+            const hashedPassword = bcrypt.hashSync(password, salt);
             const user = new User({ username, email, password: hashedPassword, nip, jabatanID});
             await user.save();
             res.redirect('/dashboard');
@@ -28,11 +28,20 @@ class UserController {
         res.render('users/login');
     }
 
-    static login(req, res) {
-        req.flash('success', 'welcome back!');
-        const redirectUrl = req.session.returnTo || '/dashboard';
-        delete req.session.returnTo;
-        res.redirect(redirectUrl);
+    static async login(req, res, next) {
+        try {
+            const { username, password } = req.body;
+            const hashedPassword = bcrypt.hashSync(password, salt);
+            const user = await User.findOne({ username, password: hashedPassword });
+
+            if (user) {
+                res.redirect('/dashboard');
+            } else {
+                res.redirect('/login');
+            }
+        } catch (e) {
+            next(e);
+        }
     }
 
     static logout(req, res) {
