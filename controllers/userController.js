@@ -45,8 +45,6 @@ class UserController {
     }
 
     static logout(req, res) {
-        req.logout();
-        req.flash('success', "Goodbye!");
         res.redirect('/login');
     }
 }
