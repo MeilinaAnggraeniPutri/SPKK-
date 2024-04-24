@@ -3,6 +3,7 @@ const Jabatan = require('../models/jabatan');
 const bcrypt = require('bcrypt');
 
 const saltRounds = 10;
+const salt = bcrypt.genSaltSync(saltRounds);
 
 class UserController {
     static async renderRegister(req, res) {
@@ -13,10 +14,10 @@ class UserController {
     static async register(req, res, next) {
         try {
             const { email, username, nip, jabatanID, password } = req.body;
-            const hashedPassword = await bcrypt.hash(password, saltRounds);
+            const hashedPassword = await bcrypt.hashSync(password, salt);
             const user = new User({ username, email, password: hashedPassword, nip, jabatanID});
             await user.save();
-            res.render('dashboard', {username});
+            res.redirect('/dashboard');
         } catch (e) {
             next(e);
             res.redirect('/register');
