@@ -1,8 +1,8 @@
 const express = require('express');
-const fileUpload = require('express-fileupload');
 const Penilaian = require('../models/penilaian');
 const Pegawai = require('../models/pegawai');
 const Kategori = require('../models/category');
+const fs = require('fs');
 
 const moment = require('moment');
 
@@ -70,28 +70,38 @@ class PenilaianController {
         }
 
         for (let j = 0; j < kategori[i].documents.length; j++) {
-          const file = req.files[`file-${i}-${j}`];
-          console.log(file);
-          const path = '/assets/pdf/'
+          const fileField = `file-${i}-${j}`;
+          const file = req.body[fileField];
 
-          if (file === null) {
-            files.push("");
-            continue;
+          var filePath = ""
+
+          if (file !== "") {
+            const fileName = `${Date.now()}-${file}`;
+            const path = '/assets/pdf/'
+            filePath = path + fileName;
           }
 
-          if (file) {
-            const fileName = `${Date.now()}-${file.name}`;
-            const filePath = path + fileName;
+          files.push(filePath);
+
+          // if (file === null) {
+          //   files.push("");
+          //   continue;
+          // }
+
+          // if (file) {
+          //   const fileName = `${Date.now()}-${file.name}`;
+          //   const filePath = path + fileName;
       
-            file.mv(filePath, (err) => {
-              if (err) {
-                console.error(err);
-              } else {
-                files.push(`/assets/pdf/${fileName}`);
-              }
-            });
-          }
-          files.push(file);
+          //   fs.writeFile(filePath, file.data, (err) => {
+          //     if (err) {
+          //       console.error(err);
+          //     } else {
+          //       files.push(filePath);
+          //     }
+          //   });
+
+          //   files.push(filePath);
+          // }
         }
 
         const fuse = {
