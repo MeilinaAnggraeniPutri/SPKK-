@@ -1,5 +1,8 @@
 const User = require('../models/user');
 const Jabatan = require('../models/jabatan');
+const bcrypt = require('bcrypt');
+
+const saltRounds = 10;
 
 class UserController {
     static async renderRegister(req, res) {
@@ -9,15 +12,13 @@ class UserController {
 
     static async register(req, res, next) {
         try {
-            const { email, username, password } = req.body;
-            const user = new User({ email, username });
-            const registeredUser = await User.register(user, password);
-            req.login(registeredUser, err => {
-                if (err) return next(err);
-                res.redirect('/login');
-            });
+            const { email, username, nip, jabatanID, password } = req.body;
+            const hashedPassword = await bcrypt.hash(password, saltRounds);
+            const user = new User({ username, email, password: hashedPassword, nip, jabatanID});
+            await user.save();
+            res.render('dashboard', {username});
         } catch (e) {
-            req.flash('error', e.message);
+            next(e);
             res.redirect('/register');
         }
     }
