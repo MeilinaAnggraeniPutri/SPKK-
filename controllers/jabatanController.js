@@ -4,15 +4,19 @@ const Pegawai = require('../models/pegawai');
 class jabatanController{
     static async index(req, res, next){
         try {
-            const jabatan = await Jabatan.find();
-            const pegawai = await Pegawai.find();
+            if (req.session.isLogin) {
+                const jabatan = await Jabatan.find();
+                const pegawai = await Pegawai.find();
 
-            const unusedJabatan = jabatan.filter(j => !pegawai.some(p => p.jabatanID.equals(j._id))).map(j => j._id);
+                const unusedJabatan = jabatan.filter(j => !pegawai.some(p => p.jabatanID.equals(j._id))).map(j => j._id);
 
-            res.render('jabatan/index', {
-                jabatan,
-                unusedJabatan
-            });
+                res.render('jabatan/index', {
+                    jabatan,
+                    unusedJabatan
+                });
+            } else {
+                res.redirect('/login');
+            }
         } catch (e) {
             next(e);
         }

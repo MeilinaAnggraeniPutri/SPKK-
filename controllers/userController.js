@@ -1,22 +1,26 @@
 const User = require('../models/user');
 const Jabatan = require('../models/jabatan');
-const bcrypt = require('bcrypt');
-
-const saltRounds = 10;
-const salt = bcrypt.genSaltSync(saltRounds);
 
 class UserController {
     static async renderRegister(req, res) {
-        const jabatan = await Jabatan.find();
-        res.render('users/register', {jabatan});
+        if (req.session.isLogin) {
+            res.redirect('/dashboard');
+        } else {
+            const jabatan = await Jabatan.find();
+            res.render('users/register', {jabatan});
+        }
     }
 
     static async register(req, res, next) {
         try {
             const { email, username, nip, jabatanID, password } = req.body;
-            const hashedPassword = bcrypt.hashSync(password, salt);
-            const user = new User({ username, email, password: hashedPassword, nip, jabatanID});
+            const user = new User({ username, email, password, nip, jabatanID});
             await user.save();
+
+            req.session.isLogin = true;
+            req.session.username = username;
+            req.session.userId = user._id;
+
             res.redirect('/dashboard');
         } catch (e) {
             next(e);
@@ -25,16 +29,22 @@ class UserController {
     }
 
     static renderLogin(req, res) {
-        res.render('users/login');
+        if (req.session.isLogin) {
+            res.redirect('/dashboard');
+        } else {
+            res.render('users/login');
+        }
     }
 
     static async login(req, res, next) {
         try {
             const { username, password } = req.body;
-            const hashedPassword = bcrypt.hashSync(password, salt);
-            const user = await User.findOne({ username, password: hashedPassword });
+            const user = await User.findOne({ username, password });
 
             if (user) {
+                req.session.isLogin = true;
+                req.session.username = username;
+                req.session.userId = user._id;
                 res.redirect('/dashboard');
             } else {
                 res.redirect('/login');

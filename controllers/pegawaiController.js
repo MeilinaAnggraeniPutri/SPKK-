@@ -6,17 +6,21 @@ class pegawaiController{
     
     static async index(req, res, next){
         try {
-            const pegawai = await Pegawai.find().populate('jabatanID');
-            const penilaian = await Penilaian.find();
-            const allJabatans = await Jabatan.find();
+            if (req.session.isLogin) {
+                const pegawai = await Pegawai.find().populate('jabatanID');
+                const penilaian = await Penilaian.find();
+                const allJabatans = await Jabatan.find();
 
-            const unusedPegawai = pegawai.filter(j => !penilaian.some(p => p.pegawaiID.equals(j._id))).map(j => j._id);
+                const unusedPegawai = pegawai.filter(j => !penilaian.some(p => p.pegawaiID.equals(j._id))).map(j => j._id);
 
-            res.render('pegawai/index', {
-                pegawai,
-                allJabatans,
-                unusedPegawai,
-            });
+                res.render('pegawai/index', {
+                    pegawai,
+                    allJabatans,
+                    unusedPegawai,
+                });
+            } else {
+                res.redirect('/login');
+            }
         } catch (e) {
             next(e);
         }

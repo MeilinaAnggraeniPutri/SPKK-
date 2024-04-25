@@ -6,9 +6,17 @@ const Category = require('../models/category');
 class categoryController{
 
     static async index(req, res, next){
-        const category = await Category.find();
+        try {
+            if (req.session.isLogin) {
+                const category = await Category.find();
         
-        res.render('category/index', { category });
+                res.render('category/index', { category });
+            } else {
+                res.redirect('/login');
+            }
+        } catch (e) {
+            next(e);
+        }
     }
 
     static async createCategory(req, res, next){

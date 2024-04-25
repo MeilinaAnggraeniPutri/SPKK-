@@ -31,14 +31,18 @@ const {
 class PenilaianController {
   static async index(req, res, next) {
     try {
-      const penilaian = await Penilaian.find({}).populate('pegawaiID');
-      const penilaianDenganTanggalBaru = penilaian.map(item => ({
-        ...item.toObject(),
-        tanggal: moment(item.tanggal).format('YYYY-MM-DD'),
-      }));
-      res.render('penilaian/index', {
-        penilaian: penilaianDenganTanggalBaru
-      });
+      if (req.session.isLogin) {
+        const penilaian = await Penilaian.find({}).populate('pegawaiID');
+        const penilaianDenganTanggalBaru = penilaian.map(item => ({
+          ...item.toObject(),
+          tanggal: moment(item.tanggal).format('YYYY-MM-DD'),
+        }));
+        res.render('penilaian/index', {
+          penilaian: penilaianDenganTanggalBaru
+        });
+      } else {
+        res.redirect('/login');
+      }
     } catch (err) {
       next(err);
     }
@@ -130,37 +134,48 @@ class PenilaianController {
 
 
   static async addPenilaian(req, res, next) {
-    // console.log("Penilaian Baru Ditambahkan");
-    const pegawai = await Pegawai.find({}).populate('jabatanID');
-    const kategori = await Kategori.find({});
-    res.render('penilaian/addPenilaian', {
-      pegawai,
-      kategori
-    });
+    try {
+      if (req.session.isLogin) {
+        const pegawai = await Pegawai.find({}).populate('jabatanID');
+        const kategori = await Kategori.find({});
+        res.render('penilaian/addPenilaian', {
+          pegawai,
+          kategori
+        });
+      } else {
+        res.redirect('/login');
+      }
+    } catch (e) {
+      next(e);
+    }
   }
 
   static async detaillPenilaian(req, res, next) {
     try {
-      const {
-        id
-      } = req.params;
-      const penilaian = await Penilaian.findById(id).populate('pegawaiID');
-
-      const penilaianDenganTanggalBaru = {
-        ...penilaian.toObject(),
-        tanggal: moment(penilaian.tanggal).format('YYYY-MM-DD'),
-      };
-
-      const kategori = await Kategori.find({});
-
-      const idPegawai = penilaian['pegawaiID'];
-      const pegawai = await Pegawai.findById(idPegawai).populate('jabatanID');
-      
-      res.render('penilaian/detailPenilaian', {
-        penilaian: penilaianDenganTanggalBaru,
-        kategori: kategori,
-        pegawai: pegawai
-      });
+      if (req.session.isLogin) {
+        const {
+          id
+        } = req.params;
+        const penilaian = await Penilaian.findById(id).populate('pegawaiID');
+  
+        const penilaianDenganTanggalBaru = {
+          ...penilaian.toObject(),
+          tanggal: moment(penilaian.tanggal).format('YYYY-MM-DD'),
+        };
+  
+        const kategori = await Kategori.find({});
+  
+        const idPegawai = penilaian['pegawaiID'];
+        const pegawai = await Pegawai.findById(idPegawai).populate('jabatanID');
+        
+        res.render('penilaian/detailPenilaian', {
+          penilaian: penilaianDenganTanggalBaru,
+          kategori: kategori,
+          pegawai: pegawai
+        });
+      } else {
+        res.redirect('login');
+      }
     } catch (e) {
       next(e);
     }
@@ -180,50 +195,54 @@ class PenilaianController {
 
   static async rankPenilaian(req, res, next) {
     try {
-      // Operasi GMM
-      const pegawaiId = await Pegawai.find({}, {
-        _id: 1
-      });
-      const matriksKeputusan = await getMatriksKeputusan(Penilaian, pegawaiId);
+      if (req.session.isLogin) {
+        // Operasi GMM
+        const pegawaiId = await Pegawai.find({}, {
+          _id: 1
+        });
+        const matriksKeputusan = await getMatriksKeputusan(Penilaian, pegawaiId);
 
-      // Operasi Topsis
-      // Normalisasi Matriks
-      const matriksTernormalisasi = await normalisasiMatriks(matriksKeputusan);
+        // Operasi Topsis
+        // Normalisasi Matriks
+        const matriksTernormalisasi = await normalisasiMatriks(matriksKeputusan);
 
-      // Pembobotan Matriks
-      const bobotData = await Kategori.find({}, {
-        _id: 0,
-        weight: 1
-      });
-      const bobot = bobotData.map(item => item.weight);
-      const matriksTerbobot = await pembobotanMatriks(matriksTernormalisasi, bobot);
+        // Pembobotan Matriks
+        const bobotData = await Kategori.find({}, {
+          _id: 0,
+          weight: 1
+        });
+        const bobot = bobotData.map(item => item.weight);
+        const matriksTerbobot = await pembobotanMatriks(matriksTernormalisasi, bobot);
 
-      // Solusi Ideal Positif dan Negatif
-      const tipeCriteriaData = await Kategori.find({}, {
-        _id: 0,
-        categoryType: 1
-      });
-      const tipeCriteria = tipeCriteriaData.map(item => item.categoryType);
-      const solusiIdealPositif = await getSolusiIdeal(matriksTerbobot, tipeCriteria, 1);
-      const solusiIdealNegatif = await getSolusiIdeal(matriksTerbobot, tipeCriteria, 0);
+        // Solusi Ideal Positif dan Negatif
+        const tipeCriteriaData = await Kategori.find({}, {
+          _id: 0,
+          categoryType: 1
+        });
+        const tipeCriteria = tipeCriteriaData.map(item => item.categoryType);
+        const solusiIdealPositif = await getSolusiIdeal(matriksTerbobot, tipeCriteria, 1);
+        const solusiIdealNegatif = await getSolusiIdeal(matriksTerbobot, tipeCriteria, 0);
 
-      // Jarak Ideal Positif dan Negatif
-      const jarakIdealPositif = await getJarakIdeal(matriksTerbobot, solusiIdealPositif);
-      const jarakIdealNegatif = await getJarakIdeal(matriksTerbobot, solusiIdealNegatif);
+        // Jarak Ideal Positif dan Negatif
+        const jarakIdealPositif = await getJarakIdeal(matriksTerbobot, solusiIdealPositif);
+        const jarakIdealNegatif = await getJarakIdeal(matriksTerbobot, solusiIdealNegatif);
 
-      // Nilai Preferensi
-      const nilaiPreferensi = await getNilaiPreferensi(jarakIdealPositif, jarakIdealNegatif);
+        // Nilai Preferensi
+        const nilaiPreferensi = await getNilaiPreferensi(jarakIdealPositif, jarakIdealNegatif);
 
-      // Perankingan Nilai Preferensi
-      const rangking = await getRanking(nilaiPreferensi);
+        // Perankingan Nilai Preferensi
+        const rangking = await getRanking(nilaiPreferensi);
 
-      const pegawai = await Pegawai.find().populate('jabatanID');
+        const pegawai = await Pegawai.find().populate('jabatanID');
 
-      res.render('penilaian/rankPenilaian', {
-        pegawai,
-        nilaiPreferensi,
-        rangking
-      });
+        res.render('penilaian/rankPenilaian', {
+          pegawai,
+          nilaiPreferensi,
+          rangking
+        });
+      } else {
+        res.redirect('/login');
+      }
     } catch (err) {
       next(err);
     }
