@@ -3,8 +3,7 @@
   <%- include('../partials/_navbar') %>
   <div class="container-fluid page-body-wrapper">
     <%- include('../partials/_settings-panel') %> <%-
-    include('../partials/_sidebar') %> <%- include('addCategory') %> <%-
-    include('editCategory') %>
+    include('../partials/_sidebar') %>
     <div class="main-panel">
       <div class="content-wrapper">
         <div class="row">
@@ -27,6 +26,7 @@
                     class="btn btn-primary btn-sm"
                     data-toggle="modal"
                     data-target="#addPegawaiModal"
+                    onclick="window.location.href='/category/new'"
                   >
                     Add Kriteria
                   </button>
@@ -45,10 +45,24 @@
                       <% category.forEach((category) => { %>
                       <tr>
                         <td><%= category.name %></td>
-                        <td><%= category.categoryType %></td>
+                        <% if (category.categoryType == 1 ) { %>
+                          <td>Benefit</td>
+                        <% } else { %>
+                          <td>Cost</td>
+                        <% }%>
                         <td><%= category.weight %></td>
                         <td>
                           <div class="d-flex">
+                            <button
+                              class="btn badge badge-dark mx-1"
+                              type="submit"
+                              onclick="window.location.href='/category/<%= category._id %>';"
+                            >
+                              <span class="badge-dark font-weight-bold">
+                                <i data-feather="detail"></i> Detail
+                              </span>
+                            </button>
+
                             <button
                               class="btn badge badge-warning mx-1 edit-pegawai"
                               type="button"

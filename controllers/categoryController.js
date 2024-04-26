@@ -19,6 +19,18 @@ class categoryController{
         }
     }
 
+    static async addCategory(req, res, next) {
+        try {
+          if (req.session.isLogin) {
+            res.render('category/addCategory');
+         } else {
+            res.redirect('/login');
+          }
+        } catch (e) {
+          next(e);
+        }
+    }
+
     static async createCategory(req, res, next){
         const {name} = req.body;
         const category = new Category({name});

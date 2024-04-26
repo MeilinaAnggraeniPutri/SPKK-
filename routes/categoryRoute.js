@@ -7,7 +7,11 @@ router.route('/')
     .get(catchAsync(categoryController.index))
 
 router.route('/new')
+.get(categoryController.addCategory)
     .post(catchAsync(categoryController.createCategory))
+
+router.route('/edit/:id')
+    .put(catchAsync(categoryController.updateCategory))
 
 router.route('/delete/:id')
     .delete(catchAsync(categoryController.deleteCategory))

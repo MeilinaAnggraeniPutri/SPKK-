@@ -1,0 +1,228 @@
+<% layout('layouts/boilerplate') %>
+<div class="container-scroller">
+  <%- include('../partials/_navbar') %>
+  <div class="container-fluid page-body-wrapper">
+    <%- include('../partials/_settings-panel') %> <%-
+    include('../partials/_sidebar') %>
+    <div class="main-panel">
+      <div class="content-wrapper">
+        <div class="row">
+          <div class="col-12 grid-margin">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Add Kriteria</h4>
+                <form class="form-sample" action="/category/new" method="POST">
+                  <p class="card-description">Form</p>
+                  <div class="row">
+                    <!-- Nama Kriteria -->
+                    <div class="col-md-12">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Nama Kriteria</label>
+                        <div class="col-sm-9">
+                            <input
+                            type="text"
+                            class="form-control"
+                            name="name"
+                            id="name"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tipe Kriteria -->
+                    <div class="col-md-12">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label"
+                          >Tipe Kriteria</label
+                        >
+                        <div class="col-sm-9">
+                          <select
+                            class="form-control"
+                            name="categoryType"
+                            id="categoryType"
+                            required
+                          >
+                            <option value=1>Benefit</option>
+                            <option value=0>Cost</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- Bobot -->
+                    <div class="col-md-12">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Bobot</label>
+                        <div class="col-sm-9">
+                          <input
+                            type="number"
+                            class="form-control"
+                            name="weight"
+                            id="weight"
+                            value="0"
+                            required
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr />
+                  <div class="row">
+                    <div class="col-sm-3 col-form-label">
+                        Banyak Sub-Criteria
+                    </div>
+                    <div class="col-sm-9">
+                        <input id="banyak-sub-criteria" class="form-control form-control-sm p-0.5 border-black col-2"
+                            type="number" min="1" value="1" onchange="change_sub_criteria_length()">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                              <th class="text-center">Nama Sub-Criteria</th>
+                              <th class="text-center">Nilai Maksimal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="input-sub-criteria">
+                            <tr>
+                                <th>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        name="subCriterias-0"
+                                        id="subCriterias-0"
+                                        required
+                                    />
+                                </th>
+                                <th>
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        name="max-values-0"
+                                        id="max-values-0"
+                                        value="1"
+                                        required
+                                    />
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                  </div>
+                  <hr />
+                  <div class="row">
+                    <div class="col-sm-3 col-form-label">
+                        Banyak Dokumen Bukti
+                    </div>
+                    <div class="col-sm-9">
+                        <input id="banyak-document" class="form-control form-control-sm p-0.5 border-black col-2"
+                            type="number" min="1" value="1" onchange="change_documents_length()">
+                    </div>
+                  </div>
+                  <hr>
+                  <hr>
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                              <th class="text-center">Nama Dokumen</th>
+                            </tr>
+                        </thead>
+                        <tbody id="input-document">
+                            <tr>
+                                <th>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        name="document-0"
+                                        id="document-0"
+                                        required
+                                    />
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                  </div>
+                  <button
+                    type="submit"
+                    class="btn btn-primary my-4"
+                    data-toggle="modal"
+                    data-target="#addCategoryModal"
+                  >
+                    Submit
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- content-wrapper ends -->
+      <!-- partial:../../partials/_footer.html -->
+      <%- include('../partials/_footer') %>
+      <!-- partial -->
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+<script>
+    function change_sub_criteria_length() {
+        var banyakSubCriteria = $('#banyak-sub-criteria').val()
+        $('#input-sub-criteria').empty()
+
+        for (var i = 0; i < banyakSubCriteria; i++) {
+            var temp_html = `
+                <tr>
+                    <th>
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="subCriterias-${i}"
+                            id="subCriterias-${i}"
+                            required
+                        />
+                    </th>
+                    <th>
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="max-values-${i}"
+                            id="max-values-${i}"
+                            value="1"
+                            required
+                        />
+                    </th>
+                </tr>
+            `
+
+            $('#input-sub-criteria').append(temp_html)
+        }
+    }
+
+    function change_documents_length() {
+        var banyakDokumen = $('#banyak-document').val()
+        $('#input-document').empty()
+
+        for (var i = 0; i < banyakDokumen; i++) {
+            var temp_html = `
+                <tr>
+                    <th>
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="document-${i}"
+                            id="document-${i}"
+                            required
+                        />
+                    </th>
+                </tr>
+            `
+
+            $('#input-document').append(temp_html)
+        }
+    }
+</script>
