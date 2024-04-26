@@ -32,11 +32,35 @@ class categoryController{
     }
 
     static async createCategory(req, res, next){
-        const {name} = req.body;
-        const category = new Category({name});
-        console.log(category);
-        await category.save();
-        res.redirect(`/addPenilaian`);
+        try {
+            const {name, categoryType, weight} = req.body;
+            var subCriterias = [];
+            var maxValues = [];
+            var documents = [];
+    
+            const banyakSubCriteria = req.body['banyakSubCriteria'];
+            const banyakDokumen = req.body['banyakDokumen'];
+    
+            for (var i = 0; i < banyakSubCriteria; i++) {
+                var subCriteria = req.body[`subCriterias-${i}`];
+                var maxValue = req.body[`maxValues-${i}`];
+    
+                subCriterias.push(subCriteria);
+                maxValues.push(maxValue);
+            }
+    
+            for (var i = 0; i < banyakDokumen; i++) {
+                var document = req.body[`document-${i}`];
+    
+                documents.push(document);
+            }
+    
+            const category = new Category({name, subCriterias, maxValues, documents, categoryType, weight});
+            await category.save();
+            res.redirect(`/category`);
+        } catch (e) {
+            next(e);
+        }
     }
 
     static async deleteCategory(req, res, next){

@@ -60,6 +60,8 @@
                             name="weight"
                             id="weight"
                             value="0"
+                            min="0"
+                            step="0.01"
                             required
                           />
                         </div>
@@ -73,7 +75,7 @@
                     </div>
                     <div class="col-sm-9">
                         <input id="banyak-sub-criteria" class="form-control form-control-sm p-0.5 border-black col-2"
-                            type="number" min="1" value="1" onchange="change_sub_criteria_length()">
+                            type="number" min="1" value="1" name="banyakSubCriteria" onchange="change_sub_criteria_length()">
                     </div>
                   </div>
                   <hr>
@@ -100,9 +102,10 @@
                                     <input
                                         type="number"
                                         class="form-control"
-                                        name="max-values-0"
-                                        id="max-values-0"
+                                        name="maxValues-0"
+                                        id="maxValues-0"
                                         value="1"
+                                        min="1"
                                         required
                                     />
                                 </th>
@@ -117,7 +120,7 @@
                     </div>
                     <div class="col-sm-9">
                         <input id="banyak-document" class="form-control form-control-sm p-0.5 border-black col-2"
-                            type="number" min="1" value="1" onchange="change_documents_length()">
+                            type="number" min="1" value="1" name="banyakDokumen" onchange="change_documents_length()">
                     </div>
                   </div>
                   <hr>
@@ -188,11 +191,12 @@
                     </th>
                     <th>
                         <input
-                            type="text"
+                            type="number"
                             class="form-control"
-                            name="max-values-${i}"
-                            id="max-values-${i}"
+                            name="maxValues-${i}"
+                            id="maxValues-${i}"
                             value="1"
+                            min="1"
                             required
                         />
                     </th>
