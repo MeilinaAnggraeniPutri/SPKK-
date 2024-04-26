@@ -55,6 +55,9 @@ class UserController {
     }
 
     static logout(req, res) {
+        req.session.isLogin = false;
+        req.session.username = 'Guest';
+        req.session.userId = '101';
         res.redirect('/login');
     }
 }
