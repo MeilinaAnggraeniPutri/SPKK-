@@ -69,7 +69,7 @@ class categoryController{
             const categoryId = req.params.id;
             const category = await Category.findById(categoryId);
             res.render('category/editCategory', { category });
-         } else {
+          } else {
             res.redirect('/login');
           }
         } catch (e) {
@@ -109,10 +109,28 @@ class categoryController{
         }
     }
 
+    static async detailCategory(req, res, next) {
+        try {
+            if (req.session.isLogin) {
+                const categoryId = req.params.id;
+                const category = await Category.findById(categoryId);
+                res.render('category/detailCategory', { category });
+            } else {
+                res.redirect('/login');
+            }
+        } catch (e) {
+            next(e);
+        }
+    }
+
     static async deleteCategory(req, res, next){
-        const { id } = req.params;
-        await Category.findByIdAndDelete(id);
-        res.redirect(`/category`);
+        try {
+            const { id } = req.params;
+            await Category.findByIdAndDelete(id);
+            res.redirect(`/category`);
+        } catch (e) {
+            next(e);
+        }
     }
 }
 

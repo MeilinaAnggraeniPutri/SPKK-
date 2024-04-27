@@ -150,7 +150,7 @@ class PenilaianController {
     }
   }
 
-  static async detaillPenilaian(req, res, next) {
+  static async detailPenilaian(req, res, next) {
     try {
       if (req.session.isLogin) {
         const {

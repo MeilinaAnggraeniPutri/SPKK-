@@ -1,0 +1,178 @@
+<% layout('layouts/boilerplate') %>
+<div class="container-scroller">
+  <%- include('../partials/_navbar') %>
+  <div class="container-fluid page-body-wrapper">
+    <%- include('../partials/_settings-panel') %> <%-
+    include('../partials/_sidebar') %>
+    <div class="main-panel">
+      <div class="content-wrapper">
+        <div class="row">
+          <div class="col-12 grid-margin">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Detail Kriteria</h4>
+                <form class="form-sample">
+                  <div class="row">
+                    <!-- Nama Kriteria -->
+                    <div class="col-md-12">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Nama Kriteria</label>
+                        <div class="col-sm-9">
+                            <input
+                            type="text"
+                            class="form-control"
+                            name="name"
+                            id="name"
+                            value="<%= category.name %>"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tipe Kriteria -->
+                    <div class="col-md-12">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label"
+                          >Tipe Kriteria</label
+                        >
+                        <div class="col-sm-9">
+                          <select
+                            class="form-control"
+                            name="categoryType"
+                            id="categoryType"
+                            disabled
+                          >
+                          <option value="1">Benefit</option>
+                          <option value="0">Cost</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- Bobot -->
+                    <div class="col-md-12">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Bobot</label>
+                        <div class="col-sm-9">
+                          <input
+                            type="number"
+                            class="form-control"
+                            name="weight"
+                            id="weight"
+                            value="<%= category.weight%>"
+                            min="0"
+                            step="0.01"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr />
+                  <div class="row">
+                    <div class="col-sm-3 col-form-label">
+                        Banyak Sub-Criteria
+                    </div>
+                    <div class="col-sm-9">
+                        <input id="banyak-sub-criteria" class="form-control form-control-sm p-0.5 border-black col-2"
+                            type="number" min="1" value="<%= category.subCriterias.length %>" name="banyakSubCriteria" onchange="change_sub_criteria_length()" readonly>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                              <th class="text-center">Nama Sub-Criteria</th>
+                              <th class="text-center">Nilai Maksimal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="input-sub-criteria">
+                            <% for (var i = 0; i < category.subCriterias.length; i++) { %>
+                            <tr>
+                                <th>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        name="subCriterias-<%= i %>"
+                                        id="subCriterias-<%= i %>"
+                                        value="<%= category.subCriterias[i] %>"
+                                        readonly
+                                    />
+                                </th>
+                                <th>
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        name="maxValues-<%= i %>"
+                                        id="maxValues-<%= i %>"
+                                        value="<%= category.maxValues[i] %>"
+                                        min="1"
+                                        readonly
+                                    />
+                                </th>
+                            </tr>
+                            <%} %>
+                        </tbody>
+                    </table>
+                  </div>
+                  <hr />
+                  <div class="row">
+                    <div class="col-sm-3 col-form-label">
+                        Banyak Dokumen Bukti
+                    </div>
+                    <div class="col-sm-9">
+                        <input id="banyak-document" class="form-control form-control-sm p-0.5 border-black col-2"
+                            type="number" min="1" value="<%= category.documents.length %>" name="banyakDokumen" onchange="change_documents_length()" readonly>
+                    </div>
+                  </div>
+                  <hr>
+                  <hr>
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                              <th class="text-center">Nama Dokumen</th>
+                            </tr>
+                        </thead>
+                        <tbody id="input-document">
+                            <% for (var i = 0; i < category.documents.length; i++) { %>
+                            <tr>
+                                <th>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        name="document-<%= i %>"
+                                        id="document-<%= i %>"
+                                        value="<%= category.documents[i] %>"
+                                        readonly
+                                    />
+                                </th>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                  </div>
+                  <input type="hidden" id="idCategory" name="idCategory" value="<%= category._id %>" />
+                  <button
+                    type="button"
+                    class="btn btn-danger my-4"
+                    onclick="window.location.href='/category';"
+                  >
+                    Back
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- content-wrapper ends -->
+      <!-- partial:../../partials/_footer.html -->
+      <%- include('../partials/_footer') %>
+      <!-- partial -->
+    </div>
+  </div>
+</div>

@@ -15,7 +15,7 @@ router.route('/ranking')
 .get(catchAsync(penilainController.rankPenilaian))
     
 router.route('/:id')
-.get(catchAsync(penilainController.detaillPenilaian))
+.get(catchAsync(penilainController.detailPenilaian))
 
 router.route('/delete/:id')
     .delete(catchAsync(penilainController.deletePenilaian))

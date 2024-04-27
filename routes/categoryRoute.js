@@ -10,6 +10,9 @@ router.route('/new')
 .get(categoryController.addCategory)
     .post(catchAsync(categoryController.createCategory))
 
+router.route('/:id')
+.get(catchAsync(categoryController.detailCategory))
+
 router.route('/edit/:id')
 .get(categoryController.editCategory)
     .put(catchAsync(categoryController.updateCategory))
