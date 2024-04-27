@@ -42,6 +42,7 @@
                       </tr>
                     </thead>
                     <tbody>
+                      <% var i = 0 %>
                       <% category.forEach((category) => { %>
                       <tr>
                         <td><%= category.name %></td>
@@ -54,7 +55,7 @@
                         <td>
                           <div class="d-flex">
                             <button
-                              class="btn badge badge-dark mx-1"
+                              class="btn badge badge-dark mr-1"
                               type="submit"
                               onclick="window.location.href='/category/<%= category._id %>';"
                             >
@@ -72,18 +73,19 @@
                                 <i data-feather="edit"></i> Edit
                               </span>
                             </button>
-
-                              <!-- <div>
-                                <button class="btn badge badge-danger font-weight-bold" type="button" data-toggle="modal" data-target="#deleteModal<%= category._id %>">
+                            <% if (i > 9 ) { %>
+                              <div>
+                                <button class="btn badge badge-danger mx-1 font-weight-bold" type="button" data-toggle="modal" data-target="#deleteModal<%= category._id %>">
                                     <i data-feather="trash-2"></i> Delete
                                 </button>
-                              </div> -->
+                              </div>
+                            <% } else { %>
                               <div>
-                                <button class="btn badge badge-secondary font-weight-bold" type="button">
+                                <button class="btn badge badge-secondary mx-1 font-weight-bold" type="button">
                                     <i data-feather="trash-2"></i> Used
                                 </button>
                               </div>
-
+                            <% } %>
                             <!-- Modal Delete -->
                             <div class="modal fade" id="deleteModal<%= category._id %>" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
@@ -99,7 +101,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                            <form action="/pegawai/delete/<%= category._id %>?_method=DELETE" method="POST">
+                                            <form action="/category/delete/<%= category._id %>?_method=DELETE" method="POST">
                                                 <button type="submit" class="btn btn-danger">Delete</button>
                                             </form>
                                         </div>
@@ -109,6 +111,7 @@
                           </div>
                         </td>
                       </tr>
+                      <% i++ %>
                       <% }) %>
                     </tbody>
                   </table>

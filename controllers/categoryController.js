@@ -112,7 +112,7 @@ class categoryController{
     static async deleteCategory(req, res, next){
         const { id } = req.params;
         await Category.findByIdAndDelete(id);
-        res.redirect(`/addPenilaian`);
+        res.redirect(`/category`);
     }
 }
 
