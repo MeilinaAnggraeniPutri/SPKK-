@@ -65,10 +65,8 @@
 
                             <button
                               class="btn badge badge-warning mx-1 edit-pegawai"
-                              type="button"
-                              data-toggle="modal"
-                              data-target="#editPegawaiModal"
-                              data-id="<%= category._id %>"
+                              type="submit"
+                              onclick="window.location.href='/category/edit/<%= category._id %>';"
                             >
                               <span class="badge-warning font-weight-bold">
                                 <i data-feather="edit"></i> Edit
